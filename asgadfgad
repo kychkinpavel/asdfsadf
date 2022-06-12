@@ -1,0 +1,4 @@
+return {
+  Build = "Alpha 1.0.4",
+  GlobalMode = "Stable"
+}
