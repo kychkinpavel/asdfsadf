@@ -1,4 +1,4 @@
 return {
-  Build = "Alpha 1.0.4",
+  Build = "EXPERIMENTAL 1.0.5",
   GlobalMode = "Stable"
 }
