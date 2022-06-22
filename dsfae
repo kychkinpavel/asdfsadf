@@ -1,3 +1,16 @@
+	local Color = Color3.fromHSV(0,1,1)
+	coroutine.wrap(function()
+		local r = 255
+		local g = 255
+		local b = 255
+		while wait() do
+			for i = 0,1,0.001*0.8 do
+				Color = Color3.fromHSV(i,1,1)
+				wait()
+			end
+		end
+	end)()
+	
 	local function API_Check()
 		if Drawing == nil then
 			return "No"
