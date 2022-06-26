@@ -1,0 +1,33 @@
+	local mt = getrawmetatable(game)
+				local b = mt.__namecall
+				setreadonly(mt,false)
+	
+	
+				mt.__namecall = newcclosure(function(...)
+					local Args = {...}
+					local method = getnamecallmethod()
+					if method == "FireServer" then
+						num = Args[2]
+					end
+					return b(...)
+				end)
+				local ps = game:GetService("Players")
+				local lp = ps.LocalPlayer
+	
+				local rs = game:GetService("ReplicatedStorage",5)
+				local se = rs:WaitForChild("ServerEvents",5)
+				local rts = se:WaitForChild("ReadyToSpawn",5)
+				local preparing = rs:WaitForChild("Preparing",5)
+				if not se or not rts or not preparing then print("Something went wrong please rejoin") return end
+				if rs.Preparing.Value == true then
+					wait(1) 
+					repeat wait(1) rts:FireServer(num) until lp.Characater ~= nil
+				end
+				if rs.Preparing.Value == true then
+					game:GetService("StarterGui"):SetCore("SendNotification",{
+						Title = "AutoJoin",
+						Text = "Attempting to join the round.",
+						Duration = 5
+					})
+				end
+        print("AN")
