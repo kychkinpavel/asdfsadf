@@ -367,6 +367,5 @@ getgenv().AimPart = "Head" -- For R15 Games: {UpperTorso, LowerTorso, HumanoidRo
 			UserInputService.InputChanged:Connect(function(input)
 				if input == e2 and d2 then
 					c2(input)
-				end
         
         print("A")
