@@ -1,4 +1,3 @@
-print('ts")
 local main = Instance.new("ScreenGui")
 local screenspace = Instance.new("Frame")
 local FPS = Instance.new("Frame")
