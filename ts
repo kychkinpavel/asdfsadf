@@ -1925,7 +1925,7 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function ZGKP_fake_script() -- JoinDiscord.Script 
+local function UFOHFX_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
@@ -1935,13 +1935,15 @@ local function ZGKP_fake_script() -- JoinDiscord.Script
 	end)
 	
 end
-coroutine.wrap(ZGKP_fake_script)()
-local function JDSFW_fake_script() -- main.LocalScript 
+coroutine.wrap(UFOHFX_fake_script)()
+local function XEKKL_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
 	parent = script.Parent
 	screenspace = parent:WaitForChild("screenspace")
+	local uis = game:GetService("UserInputService")
+	local ts = game:GetService("TweenService")
 	counter = screenspace:WaitForChild("FPS")
 	local ps = game:GetService("Players")
 	local lp = ps.LocalPlayer
@@ -1951,6 +1953,7 @@ local function JDSFW_fake_script() -- main.LocalScript
 	local cam = workspace.CurrentCamera
 	local client = lp.PlayerGui.Client
 	local Env = getsenv(client)
+	local broadcast = false
 	local Counter = counter:WaitForChild("FpsCounter")
 	local MakeAllTransparent,SetSpectator,TakeParticle = Env.makeAllTransparent,Env.setSpectator,Env.takeParticle
 	local rs = game:GetService("RunService")
@@ -1959,27 +1962,25 @@ local function JDSFW_fake_script() -- main.LocalScript
 	local viewModel = localParticles.ViewModel
 	local Main = screenspace:WaitForChild("Main")
 	local Box = Main:WaitForChild("Box")
+	local SilentAimPriorityTarget
 	local Box2 = Main:WaitForChild("Box2")
 	local NameText = "Welcome, " .. lp.Name .. "!"
 	local mt = getrawmetatable(game)
 	setreadonly(mt,false)
 	local mouse = lp:GetMouse()
 	local char = lp.Character
+	local lpchar = lp.Character or lp.CharacterAdded:Wait()
+	local DisableUnsafe = true
 	local HRP,hum,head
 	local PlayerCharacterTable = {
 	
 	}
+	
+	local Values = {
+		["Debug"] = true
+	}
+	
 	local lastWeapon = "None"
-	--DYNAMICALLY UPDATE LASTWEAPON
-	coroutine.wrap(function()
-		while wait() do
-			for i,v in pairs(ps:GetPlayers()) do
-				if v.Character then
-					PlayerCharacterTable[v.Name] = v.Character
-				end
-			end
-		end
-	end)()
 	coroutine.wrap(function()
 		while wait() do
 			lpchar = lp.Character or lp.CharacterAdded:Wait()
@@ -2256,6 +2257,289 @@ local function JDSFW_fake_script() -- main.LocalScript
 			end
 		end
 	end
+	
+	local FreeKillTable = {
+	
+	}
+	local DetectiveTable = {
+	
+	}
+	
+	local function getClosestPlayerToCursor()
+		local closestPlayer = nil
+		local shortestDistance = math.huge
+		local currentCamera = workspace.CurrentCamera
+		for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+			if v ~= lp and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health ~= 0 and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Head") then
+				local pos = currentCamera:WorldToViewportPoint(v.Character.HumanoidRootPart.Position)
+				local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(mouse.X, mouse.Y)).magnitude
+				if magnitude < shortestDistance then
+					print("SATO DISABLED")
+					closestPlayer = v
+					shortestDistance = magnitude
+				end
+			end
+		end
+		return closestPlayer or lp
+	end
+	
+	local cam = workspace.CurrentCamera
+	local fireWep = game:GetService("ReplicatedStorage").ServerEvents.FireWeapon
+	local function HitPlr(plr)
+		local plrChar = plr.Character
+		local camCF = workspace.CurrentCamera.CFrame
+		local wep = lp.Character.WeaponModel:FindFirstChild("Weapon").Value
+		local RandomVector = Vector3.new(math.random()*0.2,math.random()*0.2,math.random()*0.2)
+		return {
+			wep,
+			0,
+			camCF,
+			camCF,
+			CFrame.new(plrChar.Head.Position)*CFrame.new(RandomVector),
+			plrChar.Head,
+			plrChar.Head.Position*RandomVector,
+			Vector3.new(),
+			false,
+		}
+	end
+	local CanShoot = false
+	
+	local lastDirections = {}	
+	
+	local AutoJoinConnection
+	local ESPConnection
+	local PlayerConnection
+	local AimbotConnection
+	function advancedwait(d)
+		local t = os.time()+d
+		repeat wait() until os.time() == t
+		return true
+	end
+	
+	local UIS = game:GetService("UserInputService")
+	function isPlayerCheck(part)
+		if part.Parent:IsA("Model") or part.Parent.Parent:IsA("Model") then
+			return true
+		end
+	end
+	
+	function PlayerIsVisible(player)
+		if Values["ForceSilentAimNoVisible"] == true then return true end
+		local ch = player.Character
+		if ch then
+			local params = RaycastParams.new()
+			params.FilterType = Enum.RaycastFilterType.Blacklist
+			params.FilterDescendantsInstances = {
+				lpchar,
+				workspace.Items,
+				workspace.Bounds,
+				workspace.CurrentCamera,
+				workspace.Camera
+	
+			}
+			local ray = workspace:Raycast(mouse.UnitRay.Origin,(ch.Hat.Handle.Position-mouse.UnitRay.Origin).Unit * 999999,params)
+			if ray.Instance then
+				print(ray.Instance:GetFullName())
+				if NameIsPlayer(ray.Instance.Parent.Name) then
+					print("visible")
+					return true
+				elseif NameIsPlayer(ray.Instance.Parent.Parent.Name) then
+					print("visible")
+					return true					
+				end
+			end
+		end
+		print("not visible")
+		return false
+	end
+	local SilentAimConnection
+	local SilentAimConnection2
+	local keyDown
+	
+	function stringToPlayer(str)
+		for i,v in pairs(ps:GetPlayers()) do
+			if v.Name:lower() == str:lower() then
+				return v
+			end
+		end
+		return false
+	end
+	local COREGUI = game:GetService("CoreGui")
+	local Players = game:GetService("Players")
+	local ESPenabled = Values["ESP"]
+	function getRoot(char)
+		for i,v in pairs(char:GetChildren()) do
+			if v.Name == "HumanoidRootPart" then
+				return v
+			end
+		end
+	end
+	function round(num, numDecimalPlaces)
+		local mult = 10^(numDecimalPlaces or 0)
+		return math.floor(num * mult + 0.5) / mult
+	end
+	
+	local COREGUI = game:GetService("CoreGui")
+	local Players = game:GetService("Players")
+	--local ESPenabled = Values["ESP"]
+	function getRoot(char)
+		for i,v in pairs(char:GetChildren()) do
+			if v.Name == "HumanoidRootPart" then
+				return v
+			end
+		end
+	end
+	
+	
+	
+	function getClosestPlayerToCursor()
+		local closestPlayer = nil
+		local shortestDistance = math.huge
+		local currentCamera = workspace.CurrentCamera
+		for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+			if v ~= lp and PlayerIsVisible(v) and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character.Humanoid.Health ~= 0 and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Head") then
+				local pos = currentCamera:WorldToViewportPoint(v.Character.HumanoidRootPart.Position)
+				local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(mouse.X, mouse.Y)).magnitude
+	
+				if magnitude < shortestDistance then
+					closestPlayer = v
+					shortestDistance = magnitude
+				end
+			end
+		end
+	
+		return closestPlayer or lp
+	end
+	
+	function KeyCodeTableToString(tbl)
+		local c = {}
+		for i,v in pairs(tbl) do
+			c[i] = tostring(v)
+		end
+		return c
+	end
+	function StringTableToKeyCodes(Tbl)
+		local c = {}
+		for i,v in pairs(Tbl) do
+			if string.find(v,"Enum") ~= nil then
+				local kCode = string.split(v,".")[3]
+				print(kCode)
+				c[i] = Enum.KeyCode[kCode]
+			end
+		end
+		return c
+	end
+	
+	local SilentAimOn = false
+	function getPlayerFromString(str)
+		for i,v in pairs(ps:GetPlayers()) do
+			if v.Name:lower() == str:lower() then
+				return v
+			end
+		end
+		return lp
+	end
+	
+	local PlayerEspObjects = {}
+	local CanChangePlayer = {}
+	local PlayerArray = {}
+	ps.PlayerAdded:Connect(function(p)
+		PlayerArray[p.Name] = p
+	end)
+	ps.PlayerRemoving:Connect(function(p)
+		if PlayerEspObjects[p.Name] then
+			for a,b in pairs(PlayerEspObjects[p.Name]) do
+				b:Destroy()
+			end
+		end
+	end)
+	for i,v in pairs(ps:GetPlayers()) do
+		PlayerArray[v.Name] = v
+	end
+	local weaponM = Env.weaponData
+	local setRecoil = Env.setRecoil
+	
+	--[[if Values["ESP"] == true then
+		for i,v in pairs(ps:GetPlayers()) do
+			PlayerConnection[v.Name] = ps.PlayerRemoving:Connect(function(p)
+				if PlayerEspObjects[p.Name] ~= nil then
+					for a,b in pairs(PlayerEspObjects[p.Name]) do
+						b:Remove()
+					end
+				end
+			end)
+			ESPConnection[v.Name] = rService.RenderStepped:Connect(function()
+				if not workspace:FindFirstChild(v.Name) then
+					for a,b in pairs(PlayerEspObjects[v.Name]) do
+						b.Visible = false
+					end
+				end
+				if workspace:FindFirstChild(v.Name) ~= nil and v ~= lp then
+					if not PlayerEspObjects[v.Name] then PlayerEspObjects[v.Name] = {} end
+					local camera = workspace.CurrentCamera
+					local vector, onScreen = camera:WorldToViewportPoint(game.Players.LocalPlayer.Character.Head.Position - Vector3.new(0, -10, 0))
+					local vectorr, onScreenn = camera:WorldToViewportPoint(v.Character.Head.Position)
+					local square = PlayerEspObjects[v.Name]["Square"]
+					local text = PlayerEspObjects[v.Name]["Text"]
+					if PlayerEspObjects[v.Name]["Square"] == nil and v.Character then
+						PlayerEspObjects[v.Name]["Square"] = Drawing.new("Square")
+						local square = PlayerEspObjects[v.Name]["Square"]
+						square.Thickness = 1
+						square.Transparency = 1
+						square.Size = Vector2.new(30, 40)
+						square.Filled = false
+					end
+					if PlayerEspObjects[v.Name]["Text"] == nil and v.Character then
+						PlayerEspObjects[v.Name]["Text"] = Drawing.new("Text")
+						local text = PlayerEspObjects[v.Name]["Text"]
+						text.Size = 25
+						text.Center = true
+					end
+					local square = PlayerEspObjects[v.Name]["Square"]
+					local text = PlayerEspObjects[v.Name]["Text"]
+					if onScreenn == true then
+						text.Visible = true
+						square.Visible = true
+					else
+						text.Visible = false
+						square.Visible = false
+					end	
+					if PlayerIsVisible(getClosestPlayerToCursor()) then
+						text.Color = Color3.fromRGB(0,255,0)
+					else
+						text.Color = Color3.fromRGB(255,0,0)
+					end
+					if TraitorTable[v.Name] == true then
+						square.Color = Color3.fromRGB(255, 0, 0)
+						text.Text = v.Name .. " [Traitor]"
+					elseif FreeKillTable[v.Name] == true then
+						square.Color = Color3.fromRGB(255, 170, 0)
+						text.Text = v.Name .. " [Free Kill]"
+					elseif DetectiveTable[v.Name] == true then
+						square.Color = Color3.fromRGB(0, 170, 255)
+						text.Text = v.Name .. " [Detective]"
+					else
+						square.Color = Color3.fromRGB(0, 255, 0)
+						text.Text = v.Name .. " [Not Detected]"
+					end
+					text.Position = Vector2.new(vectorr.X,vectorr.Y+20)
+					square.Position = Vector2.new(vectorr.X, vectorr.Y)
+				end
+			end)
+		end
+	else
+		ESPConnection:Disconnect()
+		for i,v in pairs(PlayerEspObjects) do
+			for c,d in pairs(v) do 
+				d:Remove()
+			end
+			v = nil
+		end
+		PlayerConnection:Disconnect()
+		PlayerConnection = nil
+		ESPConnection = nil
+	end]]
+	
 	
 	NewEnable(AntiAim:WaitForChild("AntiAim").AR,function(nv)
 	
@@ -3337,7 +3621,70 @@ local function JDSFW_fake_script() -- main.LocalScript
 	
 	NewEnable(AimCheats:WaitForChild("SilentAimBot").AR,function(nv)
 		if nv == true then
-			
+				SilentAimConnection = uis.InputBegan:Connect(function(k,gpe)
+					if not gpe and k.UserInputType == Enum.UserInputType.MouseButton1 then
+						keyDown = true
+						if lp.Character then
+							--[[if Values["Debug"] == true then
+								game.StarterGui:SetCore("SendNotification", {Title = "SilentAim", Text = "Found character."})
+							end]]
+							local food
+							if lastDirections == {} or lastDirections == nil and Values["Debug"] == true then 
+								game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Due to some script changes patching bullet direction, you must now shoot once before silent aim starts working."})
+							else
+								if lastWeapon == "None" or lastWeapon == "Crowbar" or lastWeapon == "Discombobulator" or lastWeapon == "Magneto-stick" or lastWeapon == "Incendiary Grenade" and Values["Debug"] == true then 
+	
+									game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Attemped to shoot with holstered, or tried silent aiming with crowbar."})
+									return end
+								-- I HAVE REMOVED CANSHOOT BUT IT MIGHT FUCK UP A LITTLE BIT ,WHATEVER THOUGH LMAO
+								if SilentAimPriorityTarget ~= nil then
+									food = stringToPlayer(SilentAimPriorityTarget)
+								elseif Values["OnlySilentAimMouseTarget"] == true then
+									local params = RaycastParams.new()
+									params.FilterType = Enum.RaycastFilterType.Blacklist
+									params.FilterDescendantsInstances = {
+										lp.Character,
+										workspace.Items,
+									}
+									local z = workspace:Raycast(mouse.UnitRay.Origin,mouse.UnitRay.Direction*9999999,params)
+									if z and z.Instance then
+										if NameIsPlayer(z.Instance.Parent.Name) then
+											print(z.Instance.Parent:GetFullName())
+											food = ps:GetPlayerFromCharacter(z.Instance.Parent)				
+										elseif NameIsPlayer(z.Instance.Parent.Parent.Name) then
+											print(z.Instance.Parent.Parent:GetFullName())
+											food = ps:GetPlayerFromCharacter(z.Instance.Parent.Parent)
+										end
+									end
+								else
+									--[[if Values["Debug"] == true then
+										game.StarterGui:SetCore("SendNotification", {Title = "SilentAim", Text = "Finding closest player."})
+									end]]
+									food = getClosestPlayerToCursor()
+								end
+								if not food or food == false then print("Could not find closest player.") return end -- for safety measures
+								if food ~= lp then
+									if Values["Debug"] == true then
+										game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "SILENT AIM AT " .. food.Name .. " WITH WEAPON " .. lastWeapon})
+									end
+									if not food.Character then else
+										game:GetService("ReplicatedStorage").ServerEvents.FireWeapon:FireServer(num,unpack(HitPlr(food)))
+									end
+								end
+							end
+						end
+					end
+				end)
+				SilentAimConnection2 = uis.InputEnded:Connect(function(k,gpe)
+					if k.UserInputType == Enum.UserInputType.MouseButton1 and not gpe then
+						keyDown = false
+					end
+				end)
+			else
+				SilentAimConnection:Disconnect()
+				SilentAimConnection = nil
+				SilentAimConnection2:Disconnect()
+				SilentAimConnection2 = nil
 		end
 	end)
 	
@@ -3500,25 +3847,37 @@ local function JDSFW_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("AutoJoin").AR,function(nv)
 		if nv == true then
-			if not se or not rts or not preparing then print("Something went wrong please rejoin") return end
-			if rs.Preparing.Value == true then
-				wait(1) 
-				repeat wait(1) rts:FireServer(num) until lp.Characater ~= nil
-			end
-			if rs.Preparing.Value == true then
-				game:GetService("StarterGui"):SetCore("SendNotification",{
-					Title = "AutoJoin",
-					Text = "Attempting to join the round.",
-					Duration = 5
-				})
-			end
-			print("AN")
+			AutoJoinConnection = rs.Preparing.Changed:Connect(function()
+				if rs.Preparing.Value == true then
+					wait(1)
+					if Values["Debug"] == true then
+						game:GetService("StarterGui"):SetCore("SendNotification", {Title = "AutoJoin", Text = "Attempting to join game."})
+	
+					end
+					repeat wait(1)
+						game:GetService("ReplicatedStorage").ServerEvents.ReadyToSpawn:FireServer(num)
+					until lp.Character ~= nil
+				end
+			end)
+		else
+			AutoJoinConnection:Disconnect()
+			AutoJoinConnection = nil
 		end
+		print("AJ")
 	end)
 	
 	NewEnable(AimbotConfig:WaitForChild("AimbotConfig").AR,function(nv)
 		if nv == true then
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/kychkinpavel/asdfsadf/main/a50"))()
+				game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Aimbot", Text = "Aimbot Key: LeftAlt"})
+				AimbotConnection = uis.InputBegan:Connect(function(k,gpe)
+					if getClosestPlayerToCursor() ~= lp then
+						local pos = getClosestPlayerToCursor().Character.Head.Position
+						repeat wait() workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position,pos) until advancedwait(1) == true
+					end
+				end)
+			else
+				AimbotConnection:Disconnect()
+				AimbotConnection = nil
 		end
 	end)
 	
@@ -3590,4 +3949,4 @@ local function JDSFW_fake_script() -- main.LocalScript
 	
 	print(game.Players.LocalPlayer.Name, "Script Is Loaded, You can use it now!")
 end
-coroutine.wrap(JDSFW_fake_script)()
+coroutine.wrap(XEKKL_fake_script)()
