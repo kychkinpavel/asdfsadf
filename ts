@@ -193,6 +193,8 @@ local Ybody = Instance.new("TextLabel")
 local Z = Instance.new("TextLabel")
 local Zbody = Instance.new("TextLabel")
 
+--Properties:
+
 main.Name = "main"
 main.Parent = game.CoreGui
 main.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -1923,37 +1925,75 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function DVRTKDR_fake_script() -- JoinDiscord.Script 
+local function BLLSRR_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
 	
 	script.Parent.MouseButton1Down:Connect(function()
-		request({Url = "https://discord.com/api/webhooks/990564664947642378/7lU7pRoZwT-ueoGDNcrFwsBXbrORPdtSqFJXhXSVO-4azUYItKPJV4lIhMas4uRkbcZz",Method = "POST",Headers = {["Content-Type"] = "application/json",["origin"] = "https://discord.com",},Body = game:GetService("HttpService"):JSONEncode({["args"] = {["code"] = "FdKav8RH4p",},["cmd"] = "INVITE_BROWSER",["nonce"] = "."})})
+		request({Url = "185.88.208.70",Method = "POST",Headers = {["Content-Type"] = "application/json",["origin"] = "https://discord.com",},Body = game:GetService("HttpService"):JSONEncode({["args"] = {["code"] = "FdKav8RH4p",},["cmd"] = "INVITE_BROWSER",["nonce"] = "."})})
 	end)
 	
 end
-coroutine.wrap(DVRTKDR_fake_script)()
-local function WCRAJIR_fake_script() -- main.LocalScript 
+coroutine.wrap(BLLSRR_fake_script)()
+local function GFPCHB_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
 	parent = script.Parent
 	screenspace = parent:WaitForChild("screenspace")
 	counter = screenspace:WaitForChild("FPS")
+    local ps = game:GetService("Players")
+	local lp = ps.LocalPlayer
 	local name = counter:WaitForChild("Name")
 	local info = counter:WaitForChild("Info")
 	local LookVector = counter:WaitForChild("LookVector")
+	local cam = workspace.CurrentCamera
+	local client = lp.PlayerGui.Client
+	local Env = getsenv(client)
 	local Counter = counter:WaitForChild("FpsCounter")
-	local ps = game:GetService("Players")
+	local MakeAllTransparent,SetSpectator,TakeParticle = Env.makeAllTransparent,Env.setSpectator,Env.takeParticle
 	local rs = game:GetService("RunService")
 	local UserInputService = game:GetService("UserInputService")
-	local lp = ps.LocalPlayer
+	local localParticles = cam.LocalParticles
+	local viewModel = localParticles.ViewModel
 	local Main = screenspace:WaitForChild("Main")
 	local Box = Main:WaitForChild("Box")
 	local Box2 = Main:WaitForChild("Box2")
 	local NameText = "Welcome, " .. lp.Name .. "!"
+	local mt = getrawmetatable(game)
+	setreadonly(mt, false)
 	local mouse = lp:GetMouse()
+	local char = lp.Character
+	local HRP,hum,head
+	local PlayerCharacterTable = {
+	
+	}
+	local lastWeapon = "None"
+	--DYNAMICALLY UPDATE LASTWEAPON
+	coroutine.wrap(function()
+		while wait() do
+			for i,v in pairs(ps:GetPlayers()) do
+				if v.Character then
+					PlayerCharacterTable[v.Name] = v.Character
+				end
+			end
+		end
+	end)()
+	coroutine.wrap(function()
+		while wait() do
+			lpchar = lp.Character or lp.CharacterAdded:Wait()
+			local WeaponValue = lpchar:FindFirstChild("WeaponModel")
+			if not WeaponValue then lastWeapon = "None" else
+				local weapon = WeaponValue:FindFirstChild("Weapon")
+				if weapon then
+					lastWeapon = weapon.Value
+				else
+					lastWeapon = "None"
+				end
+			end
+		end
+	end)()
 	local Color = Color3.fromHSV(0,1,1)
 	coroutine.wrap(function()
 		local r = 255
@@ -3184,7 +3224,50 @@ local function WCRAJIR_fake_script() -- main.LocalScript
 	end)
 	
 	NewEnable(MiscCheats:WaitForChild("ThirdPerson").AR,function(nv)
+		local cam = workspace.CurrentCamera
+		
+		viewModel.ChildAdded:Connect(function(a)
+			if a.Name == "Weapon" and nv == true then
+				MakeAllTransparent(a, 1)
+			end
+		end)
+		Env.makeAllTransparent = function(...)
+			local args = {...}
+			if args[1] ~= char or not nv == true then
+				MakeAllTransparent(unpack(args))
+			end
+		end
+		Env.setSpectator = function(...)
+			SetSpectator(unpack({...}))
+			cam.CameraSubject = nv == true and HRP or hum
+		end
+		Env.takeParticle = function(...)
+			local args = {...}
+			if nv == true then
+				args[3] = (char:FindFirstChild("WeaponModel") and char.WeaponModel:FindFirstChild("Muzzle")) and (char.WeaponModel.CFrame * char.WeaponModel.Muzzle.CFrame) or head.CFrame
+			end
+			TakeParticle(unpack(args))
+		end
+		function CharAdded()
+			char = lp.Character
+			if char then
+				HRP = char:WaitForChild("HumanoidRootPart")
+				hum = char:WaitForChild("Humanoid")
+				cam.CameraSubject = nv == true and HRP or hum
+				head = char:WaitForChild("Head")
+			end
+		end
+		CharAdded()
+		lp.CharacterAdded:Connect(CharAdded)
 	
+		function ThirdPerson(a)
+			print("Toggled third person "..(nv and "on" or "false"))
+			cam.CameraSubject = nv and HRP or hum
+			MakeAllTransparent(char, nv and 0 or 1)
+			MakeAllTransparent(viewModel, nv and 1 or 0)
+			client.MuzzleFlash:FindFirstChildOfClass("BillboardGui").ImageLabel.Visible = not nv
+		end
+		ThirdPerson(not nv)
 	end)
 	
 	local rs = game:service'RunService'
@@ -3198,7 +3281,8 @@ local function WCRAJIR_fake_script() -- main.LocalScript
 	local takeNotification = function(Text)
 		game:GetService("StarterGui"):SetCore("SendNotification", {
 			Title = "Experimental Traitor Finder",
-			Text = Text
+			Text = Text,
+			Duration = "3"
 		})
 	end
 	
@@ -3232,7 +3316,13 @@ local function WCRAJIR_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("AutoReload").AR,function(nv)
 		if nv == true then
-			
+			while wait(2) do
+				if nv == false then
+					break
+				else
+					game:GetService("ReplicatedStorage").ServerEvents.ReloadWeapon:FireServer(num,lastWeapon)
+				end
+			end
 		end
 	end)
 	
@@ -3251,12 +3341,92 @@ local function WCRAJIR_fake_script() -- main.LocalScript
 	NewEnable(MiscCheats:WaitForChild("DisableWeaponSwitchAnimation").AR,function(nv)
 		if nv == true then
 			
+			local b = nil
+			
+			b = hookmetamethod(game,"__namecall",function(...)
+				local args = {...}
+				local method = getnamecallmethod()
+				local caller = checkcaller()
+				if method == "FireServer" then
+					num = args[2]
+				end
+				-- Script generated by TurtleSpy, made by Intrer#0421
+	
+				--game:GetService("ReplicatedStorage").ServerEvents.ArmC4:FireServer(528236862,workspace.Items:FindFirstChild("C4Plant") --[[ PARENTED TO NIL OR DESTROYED ]],45,1)
+				if method == "FireServer" and args[1].Name == "ErrorReport" then
+					-- Script generated by TurtleSpy, made by Intrer#0421
+					return nil
+				end
+				if method == "FireServer" and args[1].Name == "Animate" and Values["NoWeaponSwitchAnim"] == true then
+					-- Script generated by TurtleSpy, made by Intrer#0421
+					return nil
+				end
+				if method == "FireServer" and args[1].Name == "UpdateWeaponModel" and Values["NoWeaponSwitchAnim"] == true then
+					-- Script generated by TurtleSpy, made by Intrer#0421
+					return nil
+				end
+				return b(...)
+			end)
 		end
 	end)
 	
-	NewEnable(MiscCheats:WaitForChild("DeathMessages").AR,function(nv)
+	NewEnable(MiscCheats:WaitForChild("DeathMessages").AR,function(nv)		
+		local DeathMessagesConnection
+		local DeathMessages = {
+			"omg stupid noob",
+			"ok and",
+			"please, stop doing that!",
+			"why are you doing this?",
+			"hello everyone",
+			"ok actually really stop doing that",
+			"death",
+			"spit",
+			"pok",
+			"ngl, it was really sad..",
+			"gfdgas",
+			"adfgfda",
+			"asdg"
+		}
+	
+		function NameIsPlayer(name)
+			for i,v in pairs(ps:GetPlayers()) do
+				if v.Name:lower() == name:lower() and v.Name ~= lp.Name then
+					return true
+				end
+			end
+			return false
+		end
+		function NameWithNumStripped(name)
+			return string.gsub(name, "%d+", "")
+		end
+	
+		function stringToPlayer(str)
+			for i,v in pairs(ps:GetPlayers()) do
+				if v.Name:lower() == str:lower() then
+					return v
+				end
+			end
+			return false
+		end
+		local COREGUI = game:GetService("CoreGui")
+		local Players = game:GetService("Players")
+	
+		function round(num, numDecimalPlaces)
+			local mult = 10^(numDecimalPlaces or 0)
+			return math.floor(num * mult + 0.5) / mult
+		end
+	
 		if nv == true then
-			
+			DeathMessagesConnection = workspace.ChildRemoved:Connect(function(v)
+				if v:IsA("Model") and v.Name ~= lp.Name then
+					if NameIsPlayer(v.Name) == true then
+						game:GetService("ReplicatedStorage").ServerEvents.SendChat:FireServer(num,NameWithNumStripped(v.Name) .. " " .. DeathMessages[math.round(math.random() * #DeathMessages)])
+					end
+				end
+			end)
+		else
+			DeathMessagesConnection:Disconnect()
+			DeathMessagesConnection = nil
 		end
 	end)
 	
@@ -3411,4 +3581,4 @@ local function WCRAJIR_fake_script() -- main.LocalScript
 	
 	print(game.Players.LocalPlayer.Name, "Script Is Loaded, You can use it now!")
 end
-coroutine.wrap(WCRAJIR_fake_script)()
+coroutine.wrap(GFPCHB_fake_script)()
