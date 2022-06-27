@@ -1925,7 +1925,7 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function UFOHFX_fake_script() -- JoinDiscord.Script 
+local function HRCU_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
@@ -1935,8 +1935,8 @@ local function UFOHFX_fake_script() -- JoinDiscord.Script
 	end)
 	
 end
-coroutine.wrap(UFOHFX_fake_script)()
-local function XEKKL_fake_script() -- main.LocalScript 
+coroutine.wrap(HRCU_fake_script)()
+local function VRKU_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
@@ -1977,7 +1977,8 @@ local function XEKKL_fake_script() -- main.LocalScript
 	}
 	
 	local Values = {
-		["Debug"] = true
+		["Debug"] = true,
+		["ForceSilentAimNoVisible"] = true
 	}
 	
 	local lastWeapon = "None"
@@ -3949,4 +3950,5 @@ local function XEKKL_fake_script() -- main.LocalScript
 	
 	print(game.Players.LocalPlayer.Name, "Script Is Loaded, You can use it now!")
 end
-coroutine.wrap(XEKKL_fake_script)()
+coroutine.wrap(VRKU_fake_script)()
+        
