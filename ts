@@ -1970,7 +1970,6 @@ local function VRKU_fake_script() -- main.LocalScript
 	local mouse = lp:GetMouse()
 	local char = lp.Character
 	local lpchar = lp.Character or lp.CharacterAdded:Wait()
-	local DisableUnsafe = true
 	local HRP,hum,head
 	local PlayerCharacterTable = {
 	
