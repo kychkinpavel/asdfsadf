@@ -1,3 +1,8 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
 local main = Instance.new("ScreenGui")
 local screenspace = Instance.new("Frame")
 local FPS = Instance.new("Frame")
@@ -231,7 +236,7 @@ Name.Position = UDim2.new(1.00836813, 0, 0.519999981, 0)
 Name.Size = UDim2.new(0.401673645, 0, 0.290566087, 0)
 Name.Font = Enum.Font.SourceSans
 Name.Text = "Welcome,  !"
-Name.TextColor3 = Color3.fromRGB(255, 0, 0)
+Name.TextColor3 = Color3.fromRGB(255, 255, 255)
 Name.TextSize = 15.000
 
 LookVector.Name = "LookVector"
@@ -277,56 +282,61 @@ NESP.Name = "N:ESP"
 NESP.Parent = Box
 NESP.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 NESP.BackgroundTransparency = 1.000
-NESP.Position = UDim2.new(-0.45714283, 0, 0.01171875, 0)
-NESP.Size = UDim2.new(0, 200, 0, 50)
+NESP.Position = UDim2.new(0.0666666701, 0, -1.02445483e-08, 0)
+NESP.Size = UDim2.new(0, 88, 0, 50)
 NESP.Font = Enum.Font.Arcade
 NESP.Text = "ESP"
 NESP.TextColor3 = Color3.fromRGB(255, 255, 255)
 NESP.TextSize = 14.000
+NESP.TextXAlignment = Enum.TextXAlignment.Left
 
 YAimCheats.Name = "Y:AimCheats"
 YAimCheats.Parent = Box
 YAimCheats.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 YAimCheats.BackgroundTransparency = 1.000
-YAimCheats.Position = UDim2.new(-0.457143068, 0, 0.0664062425, 0)
-YAimCheats.Size = UDim2.new(0, 200, 0, 50)
+YAimCheats.Position = UDim2.new(0.0666666031, 0, 0.0572916605, 0)
+YAimCheats.Size = UDim2.new(0, 121, 0, 50)
 YAimCheats.Font = Enum.Font.Arcade
 YAimCheats.Text = "Aim Cheats"
 YAimCheats.TextColor3 = Color3.fromRGB(255, 255, 255)
 YAimCheats.TextSize = 14.000
+YAimCheats.TextXAlignment = Enum.TextXAlignment.Left
 
 YAimbotConfig.Name = "Y:AimbotConfig"
 YAimbotConfig.Parent = Box
 YAimbotConfig.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 YAimbotConfig.BackgroundTransparency = 1.000
-YAimbotConfig.Position = UDim2.new(-0.175224379, 0, 0.117187537, 0)
-YAimbotConfig.Size = UDim2.new(0, 141, 0, 50)
+YAimbotConfig.Position = UDim2.new(0.0628707409, 0, 0.108072966, 0)
+YAimbotConfig.Size = UDim2.new(0, 119, 0, 50)
 YAimbotConfig.Font = Enum.Font.Arcade
 YAimbotConfig.Text = "Aimbot Config"
 YAimbotConfig.TextColor3 = Color3.fromRGB(255, 255, 255)
 YAimbotConfig.TextSize = 14.000
+YAimbotConfig.TextXAlignment = Enum.TextXAlignment.Left
 
 NMiscCheats.Name = "N:MiscCheats"
 NMiscCheats.Parent = Box
 NMiscCheats.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 NMiscCheats.BackgroundTransparency = 1.000
-NMiscCheats.Position = UDim2.new(-0.45714283, 0, 0.173177093, 0)
-NMiscCheats.Size = UDim2.new(0, 200, 0, 50)
+NMiscCheats.Position = UDim2.new(0.0666666031, 0, 0.153645843, 0)
+NMiscCheats.Size = UDim2.new(0, 116, 0, 50)
 NMiscCheats.Font = Enum.Font.Arcade
 NMiscCheats.Text = "Misc Cheats"
 NMiscCheats.TextColor3 = Color3.fromRGB(255, 255, 255)
 NMiscCheats.TextSize = 14.000
+NMiscCheats.TextXAlignment = Enum.TextXAlignment.Left
 
 YAntiAim.Name = "Y:AntiAim"
 YAntiAim.Parent = Box
 YAntiAim.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 YAntiAim.BackgroundTransparency = 1.000
-YAntiAim.Position = UDim2.new(-0.45714283, 0, 0.226562515, 0)
-YAntiAim.Size = UDim2.new(0, 200, 0, 50)
+YAntiAim.Position = UDim2.new(0.0666665435, 0, 0.20703125, 0)
+YAntiAim.Size = UDim2.new(0, 97, 0, 50)
 YAntiAim.Font = Enum.Font.Arcade
 YAntiAim.Text = "Anti Aim"
 YAntiAim.TextColor3 = Color3.fromRGB(255, 255, 255)
 YAntiAim.TextSize = 14.000
+YAntiAim.TextXAlignment = Enum.TextXAlignment.Left
 
 Box2.Name = "Box2"
 Box2.Parent = Main
@@ -1925,7 +1935,7 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function HRCU_fake_script() -- JoinDiscord.Script 
+local function ZGTI_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
@@ -1935,8 +1945,8 @@ local function HRCU_fake_script() -- JoinDiscord.Script
 	end)
 	
 end
-coroutine.wrap(HRCU_fake_script)()
-local function VRKU_fake_script() -- main.LocalScript 
+coroutine.wrap(ZGTI_fake_script)()
+local function NIMT_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
@@ -1977,7 +1987,9 @@ local function VRKU_fake_script() -- main.LocalScript
 	
 	local Values = {
 		["Debug"] = true,
-		["ForceSilentAimNoVisible"] = true
+		["ForceSilentAimNoVisible"] = true,
+		["OnlySilentAimMouseTarget"] = false,
+		["NoRecoil"] = false
 	}
 	
 	local lastWeapon = "None"
@@ -2265,6 +2277,10 @@ local function VRKU_fake_script() -- main.LocalScript
 	
 	}
 	
+	local TraitorTable = {
+	
+	}
+	
 	local function getClosestPlayerToCursor()
 		local closestPlayer = nil
 		local shortestDistance = math.huge
@@ -2459,86 +2475,86 @@ local function VRKU_fake_script() -- main.LocalScript
 	local weaponM = Env.weaponData
 	local setRecoil = Env.setRecoil
 	
-	--[[if Values["ESP"] == true then
-		for i,v in pairs(ps:GetPlayers()) do
-			PlayerConnection[v.Name] = ps.PlayerRemoving:Connect(function(p)
-				if PlayerEspObjects[p.Name] ~= nil then
-					for a,b in pairs(PlayerEspObjects[p.Name]) do
-						b:Remove()
-					end
+			--[[if Values["ESP"] == true then
+				for i,v in pairs(ps:GetPlayers()) do
+					PlayerConnection[v.Name] = ps.PlayerRemoving:Connect(function(p)
+						if PlayerEspObjects[p.Name] ~= nil then
+							for a,b in pairs(PlayerEspObjects[p.Name]) do
+								b:Remove()
+							end
+						end
+					end)
+					ESPConnection[v.Name] = rService.RenderStepped:Connect(function()
+						if not workspace:FindFirstChild(v.Name) then
+							for a,b in pairs(PlayerEspObjects[v.Name]) do
+								b.Visible = false
+							end
+						end
+						if workspace:FindFirstChild(v.Name) ~= nil and v ~= lp then
+							if not PlayerEspObjects[v.Name] then PlayerEspObjects[v.Name] = {} end
+							local camera = workspace.CurrentCamera
+							local vector, onScreen = camera:WorldToViewportPoint(game.Players.LocalPlayer.Character.Head.Position - Vector3.new(0, -10, 0))
+							local vectorr, onScreenn = camera:WorldToViewportPoint(v.Character.Head.Position)
+							local square = PlayerEspObjects[v.Name]["Square"]
+							local text = PlayerEspObjects[v.Name]["Text"]
+							if PlayerEspObjects[v.Name]["Square"] == nil and v.Character then
+								PlayerEspObjects[v.Name]["Square"] = Drawing.new("Square")
+								local square = PlayerEspObjects[v.Name]["Square"]
+								square.Thickness = 1
+								square.Transparency = 1
+								square.Size = Vector2.new(30, 40)
+								square.Filled = false
+							end
+							if PlayerEspObjects[v.Name]["Text"] == nil and v.Character then
+								PlayerEspObjects[v.Name]["Text"] = Drawing.new("Text")
+								local text = PlayerEspObjects[v.Name]["Text"]
+								text.Size = 25
+								text.Center = true
+							end
+							local square = PlayerEspObjects[v.Name]["Square"]
+							local text = PlayerEspObjects[v.Name]["Text"]
+							if onScreenn == true then
+								text.Visible = true
+								square.Visible = true
+							else
+								text.Visible = false
+								square.Visible = false
+							end	
+							if PlayerIsVisible(getClosestPlayerToCursor()) then
+								text.Color = Color3.fromRGB(0,255,0)
+							else
+								text.Color = Color3.fromRGB(255,0,0)
+							end
+							if TraitorTable[v.Name] == true then
+								square.Color = Color3.fromRGB(255, 0, 0)
+								text.Text = v.Name .. " [Traitor]"
+							elseif FreeKillTable[v.Name] == true then
+								square.Color = Color3.fromRGB(255, 170, 0)
+								text.Text = v.Name .. " [Free Kill]"
+							elseif DetectiveTable[v.Name] == true then
+								square.Color = Color3.fromRGB(0, 170, 255)
+								text.Text = v.Name .. " [Detective]"
+							else
+								square.Color = Color3.fromRGB(0, 255, 0)
+								text.Text = v.Name .. " [Not Detected]"
+							end
+							text.Position = Vector2.new(vectorr.X,vectorr.Y+20)
+							square.Position = Vector2.new(vectorr.X, vectorr.Y)
+						end
+					end)
 				end
-			end)
-			ESPConnection[v.Name] = rService.RenderStepped:Connect(function()
-				if not workspace:FindFirstChild(v.Name) then
-					for a,b in pairs(PlayerEspObjects[v.Name]) do
-						b.Visible = false
+			else
+				ESPConnection:Disconnect()
+				for i,v in pairs(PlayerEspObjects) do
+					for c,d in pairs(v) do 
+						d:Remove()
 					end
+					v = nil
 				end
-				if workspace:FindFirstChild(v.Name) ~= nil and v ~= lp then
-					if not PlayerEspObjects[v.Name] then PlayerEspObjects[v.Name] = {} end
-					local camera = workspace.CurrentCamera
-					local vector, onScreen = camera:WorldToViewportPoint(game.Players.LocalPlayer.Character.Head.Position - Vector3.new(0, -10, 0))
-					local vectorr, onScreenn = camera:WorldToViewportPoint(v.Character.Head.Position)
-					local square = PlayerEspObjects[v.Name]["Square"]
-					local text = PlayerEspObjects[v.Name]["Text"]
-					if PlayerEspObjects[v.Name]["Square"] == nil and v.Character then
-						PlayerEspObjects[v.Name]["Square"] = Drawing.new("Square")
-						local square = PlayerEspObjects[v.Name]["Square"]
-						square.Thickness = 1
-						square.Transparency = 1
-						square.Size = Vector2.new(30, 40)
-						square.Filled = false
-					end
-					if PlayerEspObjects[v.Name]["Text"] == nil and v.Character then
-						PlayerEspObjects[v.Name]["Text"] = Drawing.new("Text")
-						local text = PlayerEspObjects[v.Name]["Text"]
-						text.Size = 25
-						text.Center = true
-					end
-					local square = PlayerEspObjects[v.Name]["Square"]
-					local text = PlayerEspObjects[v.Name]["Text"]
-					if onScreenn == true then
-						text.Visible = true
-						square.Visible = true
-					else
-						text.Visible = false
-						square.Visible = false
-					end	
-					if PlayerIsVisible(getClosestPlayerToCursor()) then
-						text.Color = Color3.fromRGB(0,255,0)
-					else
-						text.Color = Color3.fromRGB(255,0,0)
-					end
-					if TraitorTable[v.Name] == true then
-						square.Color = Color3.fromRGB(255, 0, 0)
-						text.Text = v.Name .. " [Traitor]"
-					elseif FreeKillTable[v.Name] == true then
-						square.Color = Color3.fromRGB(255, 170, 0)
-						text.Text = v.Name .. " [Free Kill]"
-					elseif DetectiveTable[v.Name] == true then
-						square.Color = Color3.fromRGB(0, 170, 255)
-						text.Text = v.Name .. " [Detective]"
-					else
-						square.Color = Color3.fromRGB(0, 255, 0)
-						text.Text = v.Name .. " [Not Detected]"
-					end
-					text.Position = Vector2.new(vectorr.X,vectorr.Y+20)
-					square.Position = Vector2.new(vectorr.X, vectorr.Y)
-				end
-			end)
-		end
-	else
-		ESPConnection:Disconnect()
-		for i,v in pairs(PlayerEspObjects) do
-			for c,d in pairs(v) do 
-				d:Remove()
-			end
-			v = nil
-		end
-		PlayerConnection:Disconnect()
-		PlayerConnection = nil
-		ESPConnection = nil
-	end]]
+				PlayerConnection:Disconnect()
+				PlayerConnection = nil
+				ESPConnection = nil
+			end]]
 	
 	
 	NewEnable(AntiAim:WaitForChild("AntiAim").AR,function(nv)
@@ -2735,6 +2751,7 @@ local function VRKU_fake_script() -- main.LocalScript
 				distance = true,
 				health = true,
 				outline = false, -- text outline, laggier
+				role = true,
 	
 				-- rainbow settings
 				rainbow = false,
@@ -3257,6 +3274,10 @@ local function VRKU_fake_script() -- main.LocalScript
 									text = string_format("%s%s ", text, plr.Name)
 								end
 	
+								if options.role then
+	
+								end
+	
 								local head_screen, h_visible = to_screen(head.Position + head.CFrame.UpVector * 2)
 	
 								if h_visible then
@@ -3485,7 +3506,7 @@ local function VRKU_fake_script() -- main.LocalScript
 	end)
 	
 	NewEnable(MiscCheats:WaitForChild("NoFall").AR,function(nv)
-			if nv == true then
+		if nv == true then
 			print("nf")
 			local b = nil
 	
@@ -3518,7 +3539,7 @@ local function VRKU_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("ThirdPerson").AR,function(nv)
 		local cam = workspace.CurrentCamera
-		
+	
 		viewModel.ChildAdded:Connect(function(a)
 			if a.Name == "Weapon" and nv == true then
 				MakeAllTransparent(a, 1)
@@ -3575,7 +3596,7 @@ local function VRKU_fake_script() -- main.LocalScript
 		game:GetService("StarterGui"):SetCore("SendNotification", {
 			Title = "Experimental Traitor Finder",
 			Text = Text,
-			Duration = "3"
+			Duration = "1"
 		})
 	end
 	
@@ -3594,16 +3615,23 @@ local function VRKU_fake_script() -- main.LocalScript
 						MakeT(cd.KilledBy.Value, "TRAITOR")
 						MakeT(cd.KilledBy.Value, "TRAITOR")
 					end
+					for i,v in pairs(ps:GetChildren()) do
+						v:WaitForChild("Data").AchievementData.Teamkills.Changed:Connect(function()
+							if v:WaitForChild("Data").AchievementData.Teamkills.Value > 0 then
+								game:GetService("StarterGui"):SetCore("SendNotification", {Title = "ExperimentalTraitorFinder", Text = v.Name .. " FLAGGED AS FREE"})
+							end
+						end)
+					end
 				end
 			end)
 		else
 			local Freekill = {}
-			end
+		end
 	end)
 	
 	NewEnable(MiscCheats:WaitForChild("BunnyHop").AR,function(nv)
 		if nv == true then
-			
+	
 		end
 	end)
 	
@@ -3621,84 +3649,84 @@ local function VRKU_fake_script() -- main.LocalScript
 	
 	NewEnable(AimCheats:WaitForChild("SilentAimBot").AR,function(nv)
 		if nv == true then
-				SilentAimConnection = uis.InputBegan:Connect(function(k,gpe)
-					if not gpe and k.UserInputType == Enum.UserInputType.MouseButton1 then
-						keyDown = true
-						if lp.Character then
-							--[[if Values["Debug"] == true then
-								game.StarterGui:SetCore("SendNotification", {Title = "SilentAim", Text = "Found character."})
-							end]]
-							local food
-							if lastDirections == {} or lastDirections == nil and Values["Debug"] == true then 
-								game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Due to some script changes patching bullet direction, you must now shoot once before silent aim starts working."})
-							else
-								if lastWeapon == "None" or lastWeapon == "Crowbar" or lastWeapon == "Discombobulator" or lastWeapon == "Magneto-stick" or lastWeapon == "Incendiary Grenade" and Values["Debug"] == true then 
-	
-									game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Attemped to shoot with holstered, or tried silent aiming with crowbar."})
-									return end
-								-- I HAVE REMOVED CANSHOOT BUT IT MIGHT FUCK UP A LITTLE BIT ,WHATEVER THOUGH LMAO
-								if SilentAimPriorityTarget ~= nil then
-									food = stringToPlayer(SilentAimPriorityTarget)
-								elseif Values["OnlySilentAimMouseTarget"] == true then
-									local params = RaycastParams.new()
-									params.FilterType = Enum.RaycastFilterType.Blacklist
-									params.FilterDescendantsInstances = {
-										lp.Character,
-										workspace.Items,
-									}
-									local z = workspace:Raycast(mouse.UnitRay.Origin,mouse.UnitRay.Direction*9999999,params)
-									if z and z.Instance then
-										if NameIsPlayer(z.Instance.Parent.Name) then
-											print(z.Instance.Parent:GetFullName())
-											food = ps:GetPlayerFromCharacter(z.Instance.Parent)				
-										elseif NameIsPlayer(z.Instance.Parent.Parent.Name) then
-											print(z.Instance.Parent.Parent:GetFullName())
-											food = ps:GetPlayerFromCharacter(z.Instance.Parent.Parent)
-										end
-									end
-								else
+			SilentAimConnection = uis.InputBegan:Connect(function(k,gpe)
+				if not gpe and k.UserInputType == Enum.UserInputType.MouseButton1 then
+					keyDown = true
+					if lp.Character then
 									--[[if Values["Debug"] == true then
-										game.StarterGui:SetCore("SendNotification", {Title = "SilentAim", Text = "Finding closest player."})
+										game.StarterGui:SetCore("SendNotification", {Title = "SilentAim", Text = "Found character."})
 									end]]
-									food = getClosestPlayerToCursor()
+						local food
+						if lastDirections == {} or lastDirections == nil and Values["Debug"] == true then 
+							game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Due to some script changes patching bullet direction, you must now shoot once before silent aim starts working."})
+						else
+							if lastWeapon == "None" or lastWeapon == "Crowbar" or lastWeapon == "Discombobulator" or lastWeapon == "Magneto-stick" or lastWeapon == "Incendiary Grenade" and Values["Debug"] == true then 
+	
+								game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Attemped to shoot with holstered, or tried silent aiming with crowbar."})
+								return end
+							-- I HAVE REMOVED CANSHOOT BUT IT MIGHT FUCK UP A LITTLE BIT ,WHATEVER THOUGH LMAO
+							if SilentAimPriorityTarget ~= nil then
+								food = stringToPlayer(SilentAimPriorityTarget)
+							elseif Values["OnlySilentAimMouseTarget"] == true then
+								local params = RaycastParams.new()
+								params.FilterType = Enum.RaycastFilterType.Blacklist
+								params.FilterDescendantsInstances = {
+									lp.Character,
+									workspace.Items,
+								}
+								local z = workspace:Raycast(mouse.UnitRay.Origin,mouse.UnitRay.Direction*9999999,params)
+								if z and z.Instance then
+									if NameIsPlayer(z.Instance.Parent.Name) then
+										print(z.Instance.Parent:GetFullName())
+										food = ps:GetPlayerFromCharacter(z.Instance.Parent)				
+									elseif NameIsPlayer(z.Instance.Parent.Parent.Name) then
+										print(z.Instance.Parent.Parent:GetFullName())
+										food = ps:GetPlayerFromCharacter(z.Instance.Parent.Parent)
+									end
 								end
-								if not food or food == false then print("Could not find closest player.") return end -- for safety measures
-								if food ~= lp then
-									if Values["Debug"] == true then
-										game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "SILENT AIM AT " .. food.Name .. " WITH WEAPON " .. lastWeapon})
-									end
-									if not food.Character then else
-										game:GetService("ReplicatedStorage").ServerEvents.FireWeapon:FireServer(num,unpack(HitPlr(food)))
-									end
+							else
+											--[[if Values["Debug"] == true then
+												game.StarterGui:SetCore("SendNotification", {Title = "SilentAim", Text = "Finding closest player."})
+											end]]
+								food = getClosestPlayerToCursor()
+							end
+							if not food or food == false then print("Could not find closest player.") return end -- for safety measures
+							if food ~= lp then
+								if Values["Debug"] == true then
+									game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "SILENT AIM AT " .. food.Name .. " WITH WEAPON " .. lastWeapon})
+								end
+								if not food.Character then else
+									game:GetService("ReplicatedStorage").ServerEvents.FireWeapon:FireServer(num,unpack(HitPlr(food)))
 								end
 							end
 						end
 					end
-				end)
-				SilentAimConnection2 = uis.InputEnded:Connect(function(k,gpe)
-					if k.UserInputType == Enum.UserInputType.MouseButton1 and not gpe then
-						keyDown = false
-					end
-				end)
-			else
-				SilentAimConnection:Disconnect()
-				SilentAimConnection = nil
-				SilentAimConnection2:Disconnect()
-				SilentAimConnection2 = nil
+				end
+			end)
+			SilentAimConnection2 = uis.InputEnded:Connect(function(k,gpe)
+				if k.UserInputType == Enum.UserInputType.MouseButton1 and not gpe then
+					keyDown = false
+				end
+			end)
+		else
+			SilentAimConnection:Disconnect()
+			SilentAimConnection = nil
+			SilentAimConnection2:Disconnect()
+			SilentAimConnection2 = nil
 		end
 	end)
 	
 	NewEnable(MiscCheats:WaitForChild("CrouchWalk").AR,function(nv)
 		if nv == true then
-			
+	
 		end
 	end)
 	
 	NewEnable(MiscCheats:WaitForChild("DisableWeaponSwitchAnimation").AR,function(nv)
 		if nv == true then
-			
+	
 			local b = nil
-			
+	
 			b = hookmetamethod(game,"__namecall",function(...)
 				local args = {...}
 				local method = getnamecallmethod()
@@ -3788,12 +3816,12 @@ local function VRKU_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("KillMessage").AR,function(nv)
 		if nv == true then
-			
+			Env.setrecoil = not Values["NoRecoil"] and setRecoil or function() end
 		end
 	end)
 	
 	NewEnable(MiscCheats:WaitForChild("TeleportWalk").AR,function(nv)
-		
+	
 	end)
 	
 	NewEnable(MiscCheats:WaitForChild("AutoDeleteBodies").AR,function(nv)
@@ -3868,16 +3896,16 @@ local function VRKU_fake_script() -- main.LocalScript
 	
 	NewEnable(AimbotConfig:WaitForChild("AimbotConfig").AR,function(nv)
 		if nv == true then
-				game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Aimbot", Text = "Aimbot Key: LeftAlt"})
-				AimbotConnection = uis.InputBegan:Connect(function(k,gpe)
-					if getClosestPlayerToCursor() ~= lp then
-						local pos = getClosestPlayerToCursor().Character.Head.Position
-						repeat wait() workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position,pos) until advancedwait(1) == true
-					end
-				end)
-			else
-				AimbotConnection:Disconnect()
-				AimbotConnection = nil
+			game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Aimbot", Text = "Aimbot Key: LeftAlt"})
+			AimbotConnection = uis.InputBegan:Connect(function(k,gpe)
+				if getClosestPlayerToCursor() ~= lp then
+					local pos = getClosestPlayerToCursor().Character.Head.Position
+					repeat wait() workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position,pos) until advancedwait(1) == true
+				end
+			end)
+		else
+			AimbotConnection:Disconnect()
+			AimbotConnection = nil
 		end
 	end)
 	
@@ -3949,5 +3977,4 @@ local function VRKU_fake_script() -- main.LocalScript
 	
 	print(game.Players.LocalPlayer.Name, "Script Is Loaded, You can use it now!")
 end
-coroutine.wrap(VRKU_fake_script)()
-        
+coroutine.wrap(NIMT_fake_script)()
