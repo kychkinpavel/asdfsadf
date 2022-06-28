@@ -259,7 +259,7 @@ Info.Position = UDim2.new(1.44769859, 0, -0.0500000827, 0)
 Info.Size = UDim2.new(0.686192453, 0, 0.380000263, 0)
 Info.Font = Enum.Font.SourceSans
 Info.Text = "Running \"\"  mode on  Build \"\"  MM/DD/HH/YY"
-Info.TextColor3 = Color3.fromRGB(0, 0, 0)
+Info.TextColor3 = Color3.fromRGB(255, 255, 255)
 Info.TextSize = 15.000
 
 Main.Name = "Main"
@@ -270,7 +270,6 @@ Main.BorderColor3 = Color3.fromRGB(255, 0, 0)
 Main.Position = UDim2.new(1.61685554e-10, 0, 1.09445772e-10, 0)
 Main.Size = UDim2.new(0, 705, 0, 798)
 Main.Draggable = true
-
 Box.Name = "Box"
 Box.Parent = Main
 Box.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -1935,7 +1934,7 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function ZGTI_fake_script() -- JoinDiscord.Script 
+local function KZXMWD_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
@@ -1945,8 +1944,8 @@ local function ZGTI_fake_script() -- JoinDiscord.Script
 	end)
 	
 end
-coroutine.wrap(ZGTI_fake_script)()
-local function NIMT_fake_script() -- main.LocalScript 
+coroutine.wrap(KZXMWD_fake_script)()
+local function FEGD_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
@@ -2061,7 +2060,7 @@ local function NIMT_fake_script() -- main.LocalScript
 		local function shit(t)
 			return t>12 and t-12 or t
 		end
-		info.TextColor3 = Color
+		info.TextColor3 = Color3.new(255,255,255)
 		info.Text = string.format('Running %s mode on build %s. D/T: %s/%s/%s  %s:%s:%s %s',data.GlobalMode,data.Build,LocalTime.month,LocalTime.day,LocalTime.year,LocalTime.hour >= 10 and shit(LocalTime.hour) or "0"..tostring(LocalTime.hour),LocalTime.min >= 10 and LocalTime.min or "0"..tostring(LocalTime.min),LocalTime.sec >= 10 and LocalTime.sec or "0"..tostring(LocalTime.sec),LocalTime.hour > 12 and "PM" or "AM")
 		LookVector.Text = "Camera LookVector: " .. Round(lv.X,3) .. " / " .. Round(lv.Y,3) .. " / " .. Round(lv.Z,3)
 	end)
@@ -2398,15 +2397,6 @@ local function NIMT_fake_script() -- main.LocalScript
 	local COREGUI = game:GetService("CoreGui")
 	local Players = game:GetService("Players")
 	--local ESPenabled = Values["ESP"]
-	function getRoot(char)
-		for i,v in pairs(char:GetChildren()) do
-			if v.Name == "HumanoidRootPart" then
-				return v
-			end
-		end
-	end
-	
-	
 	
 	function getClosestPlayerToCursor()
 		local closestPlayer = nil
@@ -2474,88 +2464,6 @@ local function NIMT_fake_script() -- main.LocalScript
 	end
 	local weaponM = Env.weaponData
 	local setRecoil = Env.setRecoil
-	
-			--[[if Values["ESP"] == true then
-				for i,v in pairs(ps:GetPlayers()) do
-					PlayerConnection[v.Name] = ps.PlayerRemoving:Connect(function(p)
-						if PlayerEspObjects[p.Name] ~= nil then
-							for a,b in pairs(PlayerEspObjects[p.Name]) do
-								b:Remove()
-							end
-						end
-					end)
-					ESPConnection[v.Name] = rService.RenderStepped:Connect(function()
-						if not workspace:FindFirstChild(v.Name) then
-							for a,b in pairs(PlayerEspObjects[v.Name]) do
-								b.Visible = false
-							end
-						end
-						if workspace:FindFirstChild(v.Name) ~= nil and v ~= lp then
-							if not PlayerEspObjects[v.Name] then PlayerEspObjects[v.Name] = {} end
-							local camera = workspace.CurrentCamera
-							local vector, onScreen = camera:WorldToViewportPoint(game.Players.LocalPlayer.Character.Head.Position - Vector3.new(0, -10, 0))
-							local vectorr, onScreenn = camera:WorldToViewportPoint(v.Character.Head.Position)
-							local square = PlayerEspObjects[v.Name]["Square"]
-							local text = PlayerEspObjects[v.Name]["Text"]
-							if PlayerEspObjects[v.Name]["Square"] == nil and v.Character then
-								PlayerEspObjects[v.Name]["Square"] = Drawing.new("Square")
-								local square = PlayerEspObjects[v.Name]["Square"]
-								square.Thickness = 1
-								square.Transparency = 1
-								square.Size = Vector2.new(30, 40)
-								square.Filled = false
-							end
-							if PlayerEspObjects[v.Name]["Text"] == nil and v.Character then
-								PlayerEspObjects[v.Name]["Text"] = Drawing.new("Text")
-								local text = PlayerEspObjects[v.Name]["Text"]
-								text.Size = 25
-								text.Center = true
-							end
-							local square = PlayerEspObjects[v.Name]["Square"]
-							local text = PlayerEspObjects[v.Name]["Text"]
-							if onScreenn == true then
-								text.Visible = true
-								square.Visible = true
-							else
-								text.Visible = false
-								square.Visible = false
-							end	
-							if PlayerIsVisible(getClosestPlayerToCursor()) then
-								text.Color = Color3.fromRGB(0,255,0)
-							else
-								text.Color = Color3.fromRGB(255,0,0)
-							end
-							if TraitorTable[v.Name] == true then
-								square.Color = Color3.fromRGB(255, 0, 0)
-								text.Text = v.Name .. " [Traitor]"
-							elseif FreeKillTable[v.Name] == true then
-								square.Color = Color3.fromRGB(255, 170, 0)
-								text.Text = v.Name .. " [Free Kill]"
-							elseif DetectiveTable[v.Name] == true then
-								square.Color = Color3.fromRGB(0, 170, 255)
-								text.Text = v.Name .. " [Detective]"
-							else
-								square.Color = Color3.fromRGB(0, 255, 0)
-								text.Text = v.Name .. " [Not Detected]"
-							end
-							text.Position = Vector2.new(vectorr.X,vectorr.Y+20)
-							square.Position = Vector2.new(vectorr.X, vectorr.Y)
-						end
-					end)
-				end
-			else
-				ESPConnection:Disconnect()
-				for i,v in pairs(PlayerEspObjects) do
-					for c,d in pairs(v) do 
-						d:Remove()
-					end
-					v = nil
-				end
-				PlayerConnection:Disconnect()
-				PlayerConnection = nil
-				ESPConnection = nil
-			end]]
-	
 	
 	NewEnable(AntiAim:WaitForChild("AntiAim").AR,function(nv)
 	
@@ -3718,7 +3626,8 @@ local function NIMT_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("CrouchWalk").AR,function(nv)
 		if nv == true then
-	
+			local updateWalkSpeed = Env.updateWalkSpeed
+			Env.updateWalkspeed = function() end or updateWalkSpeed
 		end
 	end)
 	
@@ -3880,7 +3789,6 @@ local function NIMT_fake_script() -- main.LocalScript
 					wait(1)
 					if Values["Debug"] == true then
 						game:GetService("StarterGui"):SetCore("SendNotification", {Title = "AutoJoin", Text = "Attempting to join game."})
-	
 					end
 					repeat wait(1)
 						game:GetService("ReplicatedStorage").ServerEvents.ReadyToSpawn:FireServer(num)
@@ -3977,4 +3885,4 @@ local function NIMT_fake_script() -- main.LocalScript
 	
 	print(game.Players.LocalPlayer.Name, "Script Is Loaded, You can use it now!")
 end
-coroutine.wrap(NIMT_fake_script)()
+coroutine.wrap(FEGD_fake_script)()
