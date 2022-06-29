@@ -1,8 +1,3 @@
--- Gui to Lua
--- Version: 3.2
-
--- Instances:
-
 local main = Instance.new("ScreenGui")
 local screenspace = Instance.new("Frame")
 local FPS = Instance.new("Frame")
@@ -270,6 +265,7 @@ Main.BorderColor3 = Color3.fromRGB(255, 0, 0)
 Main.Position = UDim2.new(1.61685554e-10, 0, 1.09445772e-10, 0)
 Main.Size = UDim2.new(0, 705, 0, 798)
 Main.Draggable = true
+
 Box.Name = "Box"
 Box.Parent = Main
 Box.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -1934,18 +1930,18 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function KZXMWD_fake_script() -- JoinDiscord.Script 
+local function AXDL_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
 	
 	script.Parent.MouseButton1Down:Connect(function()
-		request({Url = "185.88.208.70",Method = "POST",Headers = {["Content-Type"] = "application/json",["origin"] = "https://discord.com",},Body = game:GetService("HttpService"):JSONEncode({["args"] = {["code"] = "FdKav8RH4p",},["cmd"] = "INVITE_BROWSER",["nonce"] = "."})})
+		request({Url = "http://127.0.0.1:6463/rpc?v=1",Method = "POST",Headers = {["Content-Type"] = "application/json",["origin"] = "https://discord.com",},Body = game:GetService("HttpService"):JSONEncode({["args"] = {["code"] = "FdKav8RH4p",},["cmd"] = "INVITE_BROWSER",["nonce"] = "."})})
 	end)
 	
 end
-coroutine.wrap(KZXMWD_fake_script)()
-local function FEGD_fake_script() -- main.LocalScript 
+coroutine.wrap(AXDL_fake_script)()
+local function ZFGZBC_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
@@ -2060,7 +2056,7 @@ local function FEGD_fake_script() -- main.LocalScript
 		local function shit(t)
 			return t>12 and t-12 or t
 		end
-		info.TextColor3 = Color3.new(255,255,255)
+		info.TextColor3 = Color
 		info.Text = string.format('Running %s mode on build %s. D/T: %s/%s/%s  %s:%s:%s %s',data.GlobalMode,data.Build,LocalTime.month,LocalTime.day,LocalTime.year,LocalTime.hour >= 10 and shit(LocalTime.hour) or "0"..tostring(LocalTime.hour),LocalTime.min >= 10 and LocalTime.min or "0"..tostring(LocalTime.min),LocalTime.sec >= 10 and LocalTime.sec or "0"..tostring(LocalTime.sec),LocalTime.hour > 12 and "PM" or "AM")
 		LookVector.Text = "Camera LookVector: " .. Round(lv.X,3) .. " / " .. Round(lv.Y,3) .. " / " .. Round(lv.Z,3)
 	end)
@@ -2397,6 +2393,15 @@ local function FEGD_fake_script() -- main.LocalScript
 	local COREGUI = game:GetService("CoreGui")
 	local Players = game:GetService("Players")
 	--local ESPenabled = Values["ESP"]
+	function getRoot(char)
+		for i,v in pairs(char:GetChildren()) do
+			if v.Name == "HumanoidRootPart" then
+				return v
+			end
+		end
+	end
+	
+	
 	
 	function getClosestPlayerToCursor()
 		local closestPlayer = nil
@@ -2464,6 +2469,88 @@ local function FEGD_fake_script() -- main.LocalScript
 	end
 	local weaponM = Env.weaponData
 	local setRecoil = Env.setRecoil
+	
+				--[[if Values["ESP"] == true then
+					for i,v in pairs(ps:GetPlayers()) do
+						PlayerConnection[v.Name] = ps.PlayerRemoving:Connect(function(p)
+							if PlayerEspObjects[p.Name] ~= nil then
+								for a,b in pairs(PlayerEspObjects[p.Name]) do
+									b:Remove()
+								end
+							end
+						end)
+						ESPConnection[v.Name] = rService.RenderStepped:Connect(function()
+							if not workspace:FindFirstChild(v.Name) then
+								for a,b in pairs(PlayerEspObjects[v.Name]) do
+									b.Visible = false
+								end
+							end
+							if workspace:FindFirstChild(v.Name) ~= nil and v ~= lp then
+								if not PlayerEspObjects[v.Name] then PlayerEspObjects[v.Name] = {} end
+								local camera = workspace.CurrentCamera
+								local vector, onScreen = camera:WorldToViewportPoint(game.Players.LocalPlayer.Character.Head.Position - Vector3.new(0, -10, 0))
+								local vectorr, onScreenn = camera:WorldToViewportPoint(v.Character.Head.Position)
+								local square = PlayerEspObjects[v.Name]["Square"]
+								local text = PlayerEspObjects[v.Name]["Text"]
+								if PlayerEspObjects[v.Name]["Square"] == nil and v.Character then
+									PlayerEspObjects[v.Name]["Square"] = Drawing.new("Square")
+									local square = PlayerEspObjects[v.Name]["Square"]
+									square.Thickness = 1
+									square.Transparency = 1
+									square.Size = Vector2.new(30, 40)
+									square.Filled = false
+								end
+								if PlayerEspObjects[v.Name]["Text"] == nil and v.Character then
+									PlayerEspObjects[v.Name]["Text"] = Drawing.new("Text")
+									local text = PlayerEspObjects[v.Name]["Text"]
+									text.Size = 25
+									text.Center = true
+								end
+								local square = PlayerEspObjects[v.Name]["Square"]
+								local text = PlayerEspObjects[v.Name]["Text"]
+								if onScreenn == true then
+									text.Visible = true
+									square.Visible = true
+								else
+									text.Visible = false
+									square.Visible = false
+								end	
+								if PlayerIsVisible(getClosestPlayerToCursor()) then
+									text.Color = Color3.fromRGB(0,255,0)
+								else
+									text.Color = Color3.fromRGB(255,0,0)
+								end
+								if TraitorTable[v.Name] == true then
+									square.Color = Color3.fromRGB(255, 0, 0)
+									text.Text = v.Name .. " [Traitor]"
+								elseif FreeKillTable[v.Name] == true then
+									square.Color = Color3.fromRGB(255, 170, 0)
+									text.Text = v.Name .. " [Free Kill]"
+								elseif DetectiveTable[v.Name] == true then
+									square.Color = Color3.fromRGB(0, 170, 255)
+									text.Text = v.Name .. " [Detective]"
+								else
+									square.Color = Color3.fromRGB(0, 255, 0)
+									text.Text = v.Name .. " [Not Detected]"
+								end
+								text.Position = Vector2.new(vectorr.X,vectorr.Y+20)
+								square.Position = Vector2.new(vectorr.X, vectorr.Y)
+							end
+						end)
+					end
+				else
+					ESPConnection:Disconnect()
+					for i,v in pairs(PlayerEspObjects) do
+						for c,d in pairs(v) do 
+							d:Remove()
+						end
+						v = nil
+					end
+					PlayerConnection:Disconnect()
+					PlayerConnection = nil
+					ESPConnection = nil
+				end]]
+	
 	
 	NewEnable(AntiAim:WaitForChild("AntiAim").AR,function(nv)
 	
@@ -3425,19 +3512,16 @@ local function FEGD_fake_script() -- main.LocalScript
 				if method == "FireServer" then
 					num = args[2]
 				end
-				-- Script generated by TurtleSpy, made by Intrer#0421
-	
-				--game:GetService("ReplicatedStorage").ServerEvents.ArmC4:FireServer(528236862,workspace.Items:FindFirstChild("C4Plant") --[[ PARENTED TO NIL OR DESTROYED ]],45,1)
 				if method == "FireServer" and args[1].Name == "ErrorReport" then
-					-- Script generated by TurtleSpy, made by Intrer#0421
+	
 					return nil
 				end
 				if method == "FireServer" and args[1].Name == "Crush" and nv == true then
-					-- Script generated by TurtleSpy, made by Intrer#0421
+	
 					return nil
 				end
 				if method == "FireServer" and args[1].Name == "Fall" and nv == true then
-					-- Script generated by TurtleSpy, made by Intrer#0421
+	
 					return nil
 				end
 				return b(...)
@@ -3523,13 +3607,6 @@ local function FEGD_fake_script() -- main.LocalScript
 						MakeT(cd.KilledBy.Value, "TRAITOR")
 						MakeT(cd.KilledBy.Value, "TRAITOR")
 					end
-					for i,v in pairs(ps:GetChildren()) do
-						v:WaitForChild("Data").AchievementData.Teamkills.Changed:Connect(function()
-							if v:WaitForChild("Data").AchievementData.Teamkills.Value > 0 then
-								game:GetService("StarterGui"):SetCore("SendNotification", {Title = "ExperimentalTraitorFinder", Text = v.Name .. " FLAGGED AS FREE"})
-							end
-						end)
-					end
 				end
 			end)
 		else
@@ -3539,13 +3616,13 @@ local function FEGD_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("BunnyHop").AR,function(nv)
 		if nv == true then
-	
+			
 		end
 	end)
 	
 	NewEnable(MiscCheats:WaitForChild("AutoReload").AR,function(nv)
 		if nv == true then
-			while wait(2) do
+			while wait() do
 				if nv == false then
 					break
 				else
@@ -3561,9 +3638,9 @@ local function FEGD_fake_script() -- main.LocalScript
 				if not gpe and k.UserInputType == Enum.UserInputType.MouseButton1 then
 					keyDown = true
 					if lp.Character then
-									--[[if Values["Debug"] == true then
-										game.StarterGui:SetCore("SendNotification", {Title = "SilentAim", Text = "Found character."})
-									end]]
+						if Values["Debug"] == true then
+							game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Found character."})
+						end
 						local food
 						if lastDirections == {} or lastDirections == nil and Values["Debug"] == true then 
 							game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Due to some script changes patching bullet direction, you must now shoot once before silent aim starts working."})
@@ -3593,9 +3670,9 @@ local function FEGD_fake_script() -- main.LocalScript
 									end
 								end
 							else
-											--[[if Values["Debug"] == true then
-												game.StarterGui:SetCore("SendNotification", {Title = "SilentAim", Text = "Finding closest player."})
-											end]]
+								if Values["Debug"] == true then
+									game:GetService("StarterGui"):SetCore("SendNotification", {Title = "SilentAim", Text = "Finding closest player."})
+								end
 								food = getClosestPlayerToCursor()
 							end
 							if not food or food == false then print("Could not find closest player.") return end -- for safety measures
@@ -3626,8 +3703,7 @@ local function FEGD_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("CrouchWalk").AR,function(nv)
 		if nv == true then
-			local updateWalkSpeed = Env.updateWalkSpeed
-			Env.updateWalkspeed = function() end or updateWalkSpeed
+	
 		end
 	end)
 	
@@ -3674,11 +3750,11 @@ local function FEGD_fake_script() -- main.LocalScript
 			"ok actually really stop doing that",
 			"death",
 			"spit",
-			"pok",
+			"had conversation with babuin",
 			"ngl, it was really sad..",
-			"gfdgas",
-			"adfgfda",
-			"asdg"
+			"forgot to buy random",
+			"didnt have enough money",
+			"he forgor"
 		}
 	
 		function NameIsPlayer(name)
@@ -3789,6 +3865,7 @@ local function FEGD_fake_script() -- main.LocalScript
 					wait(1)
 					if Values["Debug"] == true then
 						game:GetService("StarterGui"):SetCore("SendNotification", {Title = "AutoJoin", Text = "Attempting to join game."})
+	
 					end
 					repeat wait(1)
 						game:GetService("ReplicatedStorage").ServerEvents.ReadyToSpawn:FireServer(num)
@@ -3836,7 +3913,7 @@ local function FEGD_fake_script() -- main.LocalScript
 	NewDropdown(AimCheats:WaitForChild("SilentAimAtModeType").AR,AimCheats:WaitForChild("SilentAimAtDropdown"),function(nv)
 		if nv == "Head" or "HumanoidRootPart" or "LeftLowerLeg" or "LeftUpperArm" or "LowerTorso" or "RightLowerLeg" or "RightUpperArm" or "UpperTorso" then
 			if nv == AimCheats:WaitForChild("SilentAimAtModeType").AR.Name.Value then
-	
+				
 			end
 		end
 	end)
@@ -3884,5 +3961,12 @@ local function FEGD_fake_script() -- main.LocalScript
 	end)
 	
 	print(game.Players.LocalPlayer.Name, "Script Is Loaded, You can use it now!")
+	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Script", Text = "Script loaded, script was made by BLIBER13#7648, neverluckymagicow#4854. Tested by burgerhunt1009[Coffe_ssddf#0422], Isat3232323v2[Isat#0260], alalala[alalalalala#6533]. Special thanks to SniperKaos[᲼᲼#1007], Malignantly[Machiavelli#1268]"})
+	print("Script loaded, script was made by BLIBER13#7648, neverluckymagicow#4854. Tested by burgerhunt1009[Coffe_ssddf#0422], Isat3232323v2[Isat#0260], alalala[alalalalala#6533]. Special thanks to SniperKaos[᲼᲼#1007], Malignantly[Machiavelli#1268]")
+	if f then
+		print(f)
+		game:GetService("StarterGui"):SetCore("SendNotification", {Title = "ScriptUtils", Text = "There was an error or your exploit is not supported."})
+		game.CoreGui.main:Destroy()
+	end
 end
-coroutine.wrap(FEGD_fake_script)()
+coroutine.wrap(ZFGZBC_fake_script)()
