@@ -1,3 +1,8 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
 local main = Instance.new("ScreenGui")
 local screenspace = Instance.new("Frame")
 local FPS = Instance.new("Frame")
@@ -245,7 +250,6 @@ LookVector.Text = "CameraLookVector:"
 LookVector.TextColor3 = Color3.fromRGB(255, 255, 255)
 LookVector.TextSize = 15.000
 LookVector.TextXAlignment = Enum.TextXAlignment.Left
-
 Info.Name = "Info"
 Info.Parent = FPS
 Info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -256,7 +260,6 @@ Info.Font = Enum.Font.SourceSans
 Info.Text = "Running \"\"  mode on  Build \"\"  MM/DD/HH/YY"
 Info.TextColor3 = Color3.fromRGB(255, 255, 255)
 Info.TextSize = 15.000
-
 Main.Name = "Main"
 Main.Parent = screenspace
 Main.Active = true
@@ -265,7 +268,6 @@ Main.BorderColor3 = Color3.fromRGB(255, 0, 0)
 Main.Position = UDim2.new(1.61685554e-10, 0, 1.09445772e-10, 0)
 Main.Size = UDim2.new(0, 705, 0, 798)
 Main.Draggable = true
-
 Box.Name = "Box"
 Box.Parent = Main
 Box.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -1930,7 +1932,7 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function AXDL_fake_script() -- JoinDiscord.Script 
+local function NFUSHNL_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
@@ -1940,8 +1942,8 @@ local function AXDL_fake_script() -- JoinDiscord.Script
 	end)
 	
 end
-coroutine.wrap(AXDL_fake_script)()
-local function ZFGZBC_fake_script() -- main.LocalScript 
+coroutine.wrap(NFUSHNL_fake_script)()
+local function XYFFHF_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
@@ -3969,4 +3971,4 @@ local function ZFGZBC_fake_script() -- main.LocalScript
 		game.CoreGui.main:Destroy()
 	end
 end
-coroutine.wrap(ZFGZBC_fake_script)()
+coroutine.wrap(XYFFHF_fake_script)() 
