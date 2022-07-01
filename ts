@@ -221,12 +221,16 @@ FpsCounter.Name = "FpsCounter"
 FpsCounter.Parent = FPS
 FpsCounter.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 FpsCounter.BackgroundTransparency = 1.000
+FpsCounter.BorderColor3 = Color3.fromRGB(0, 0, 0)
+FpsCounter.BorderSizePixel = 100
 FpsCounter.Position = UDim2.new(0.866108835, 0, 0.820000172, 0)
 FpsCounter.Size = UDim2.new(0.410041839, 0, 0.239999995, 0)
 FpsCounter.Font = Enum.Font.SourceSans
 FpsCounter.Text = "FPS:"
 FpsCounter.TextColor3 = Color3.fromRGB(255, 255, 255)
 FpsCounter.TextSize = 15.000
+FpsCounter.TextStrokeTransparency = 0.000
+FpsCounter.TextWrapped = true
 
 Name.Name = "Name"
 Name.Parent = FPS
@@ -249,7 +253,9 @@ LookVector.Font = Enum.Font.SourceSans
 LookVector.Text = "CameraLookVector:"
 LookVector.TextColor3 = Color3.fromRGB(255, 255, 255)
 LookVector.TextSize = 15.000
+LookVector.TextStrokeTransparency = 0.000
 LookVector.TextXAlignment = Enum.TextXAlignment.Left
+
 Info.Name = "Info"
 Info.Parent = FPS
 Info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -260,18 +266,21 @@ Info.Font = Enum.Font.SourceSans
 Info.Text = "Running \"\"  mode on  Build \"\"  MM/DD/HH/YY"
 Info.TextColor3 = Color3.fromRGB(255, 255, 255)
 Info.TextSize = 15.000
+
 Main.Name = "Main"
 Main.Parent = screenspace
 Main.Active = true
 Main.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Main.BorderColor3 = Color3.fromRGB(255, 0, 0)
+Main.BorderSizePixel = 2
 Main.Position = UDim2.new(1.61685554e-10, 0, 1.09445772e-10, 0)
 Main.Size = UDim2.new(0, 705, 0, 798)
 Main.Draggable = true
 Box.Name = "Box"
 Box.Parent = Main
 Box.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-Box.BorderColor3 = Color3.fromRGB(72, 72, 72)
+Box.BorderColor3 = Color3.fromRGB(91, 91, 91)
+Box.BorderSizePixel = 2
 Box.Position = UDim2.new(0.0260972474, 0, 0.0188679323, 0)
 Box.Size = UDim2.new(0, 105, 0, 768)
 
@@ -338,7 +347,8 @@ YAntiAim.TextXAlignment = Enum.TextXAlignment.Left
 Box2.Name = "Box2"
 Box2.Parent = Main
 Box2.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-Box2.BorderColor3 = Color3.fromRGB(72, 72, 72)
+Box2.BorderColor3 = Color3.fromRGB(91, 91, 91)
+Box2.BorderSizePixel = 2
 Box2.Position = UDim2.new(0.199212521, 0, 0.0188679248, 0)
 Box2.Size = UDim2.new(0, 551, 0, 768)
 
@@ -1932,7 +1942,7 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function NFUSHNL_fake_script() -- JoinDiscord.Script 
+local function MUDJLS_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
@@ -1942,8 +1952,8 @@ local function NFUSHNL_fake_script() -- JoinDiscord.Script
 	end)
 	
 end
-coroutine.wrap(NFUSHNL_fake_script)()
-local function XYFFHF_fake_script() -- main.LocalScript 
+coroutine.wrap(MUDJLS_fake_script)()
+local function GQQB_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
@@ -2053,6 +2063,7 @@ local function XYFFHF_fake_script() -- main.LocalScript
 	rs.RenderStepped:Connect(function(step)
 		FPS = "FPS: " .. math.round(1/step)
 		Counter.Text = FPS
+		Counter.TextStrokeColor3 = Color
 		local LocalTime = os.date("*t")
 		local lv = workspace.CurrentCamera.CFrame.LookVector
 		local function shit(t)
@@ -2061,6 +2072,7 @@ local function XYFFHF_fake_script() -- main.LocalScript
 		info.TextColor3 = Color
 		info.Text = string.format('Running %s mode on build %s. D/T: %s/%s/%s  %s:%s:%s %s',data.GlobalMode,data.Build,LocalTime.month,LocalTime.day,LocalTime.year,LocalTime.hour >= 10 and shit(LocalTime.hour) or "0"..tostring(LocalTime.hour),LocalTime.min >= 10 and LocalTime.min or "0"..tostring(LocalTime.min),LocalTime.sec >= 10 and LocalTime.sec or "0"..tostring(LocalTime.sec),LocalTime.hour > 12 and "PM" or "AM")
 		LookVector.Text = "Camera LookVector: " .. Round(lv.X,3) .. " / " .. Round(lv.Y,3) .. " / " .. Round(lv.Z,3)
+		LookVector.TextStrokeColor3 = Color
 	end)
 	
 	local AimCheats,AimbotConfig,AntiAim,ESP,MiscCheats = Box2:WaitForChild("AimCheats:AimCheats"),Box2:WaitForChild("AimbotConfig:AimbotConfig"),Box2:WaitForChild("AntiAim:AntiAim"),Box2:WaitForChild("ESP:ESP"),Box2:WaitForChild("MiscCheats:MiscCheats")
@@ -2099,7 +2111,7 @@ local function XYFFHF_fake_script() -- main.LocalScript
 					if b.Text == v then
 						b.Value = not b.Value
 						b.Text.Name = "Y:"..string.split(b.Text.Name,":")[2]
-						b.Text.TextColor3 = Color
+						b.Text.TextColor3 = Color3.new(1,0,0)
 						ActivateCategory(b)
 					else
 						b.Text.Name = "N:"..string.split(b.Text.Name,":")[2]
@@ -3964,11 +3976,11 @@ local function XYFFHF_fake_script() -- main.LocalScript
 	
 	print(game.Players.LocalPlayer.Name, "Script Is Loaded, You can use it now!")
 	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Script", Text = "Script loaded, script was made by BLIBER13#7648, neverluckymagicow#4854. Tested by burgerhunt1009[Coffe_ssddf#0422], Isat3232323v2[Isat#0260], alalala[alalalalala#6533]. Special thanks to SniperKaos[᲼᲼#1007], Malignantly[Machiavelli#1268]"})
-	print("Script loaded, script was made by BLIBER13#7648, neverluckymagicow#4854. Tested by burgerhunt1009[Coffe_ssddf#0422], Isat3232323v2[Isat#0260], alalala[alalalalala#6533]. Special thanks to SniperKaos[᲼᲼#1007], Malignantly[Machiavelli#1268]")
+	print("Script loaded, script was made by BLIBER13#7648, neverluckymagicow#4854. Tested by burgerhunt1009[Coffe_ssddf#0422], Isat3232323v2[Isat#0260], alalala[alalalalala#6533], . Special thanks to SniperKaos[᲼᲼#1007], Malignantly[Machiavelli#1268]")
 	if f then
 		print(f)
 		game:GetService("StarterGui"):SetCore("SendNotification", {Title = "ScriptUtils", Text = "There was an error or your exploit is not supported."})
 		game.CoreGui.main:Destroy()
 	end
 end
-coroutine.wrap(XYFFHF_fake_script)() 
+coroutine.wrap(GQQB_fake_script)()
