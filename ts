@@ -242,6 +242,7 @@ Name.Font = Enum.Font.SourceSans
 Name.Text = "Welcome,  !"
 Name.TextColor3 = Color3.fromRGB(255, 255, 255)
 Name.TextSize = 15.000
+Name.TextStrokeTransparency = 0.000
 
 LookVector.Name = "LookVector"
 LookVector.Parent = FPS
@@ -266,6 +267,7 @@ Info.Font = Enum.Font.SourceSans
 Info.Text = "Running \"\"  mode on  Build \"\"  MM/DD/HH/YY"
 Info.TextColor3 = Color3.fromRGB(255, 255, 255)
 Info.TextSize = 15.000
+Info.TextStrokeTransparency = 0.000
 
 Main.Name = "Main"
 Main.Parent = screenspace
@@ -276,6 +278,7 @@ Main.BorderSizePixel = 2
 Main.Position = UDim2.new(1.61685554e-10, 0, 1.09445772e-10, 0)
 Main.Size = UDim2.new(0, 705, 0, 798)
 Main.Draggable = true
+
 Box.Name = "Box"
 Box.Parent = Main
 Box.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -1942,7 +1945,7 @@ Zbody.TextSize = 14.000
 
 -- Scripts:
 
-local function MUDJLS_fake_script() -- JoinDiscord.Script 
+local function HLHCN_fake_script() -- JoinDiscord.Script 
 	local script = Instance.new('Script', JoinDiscord)
 
 	local http = game:GetService("HttpService")
@@ -1952,8 +1955,8 @@ local function MUDJLS_fake_script() -- JoinDiscord.Script
 	end)
 	
 end
-coroutine.wrap(MUDJLS_fake_script)()
-local function GQQB_fake_script() -- main.LocalScript 
+coroutine.wrap(HLHCN_fake_script)()
+local function PSTPARG_fake_script() -- main.LocalScript 
 	local script = Instance.new('LocalScript', main)
 
 	local parent,screenspace,counter
@@ -2046,6 +2049,7 @@ local function GQQB_fake_script() -- main.LocalScript
 		local x = 0
 		local r = false
 		name.TextColor3 = Color
+		name.TextStrokeColor3 = Color
 		while task.wait(math.random(0.6,0.8)) do
 			if x > string.len(NameText) then
 				task.wait(1.5)
@@ -2070,6 +2074,7 @@ local function GQQB_fake_script() -- main.LocalScript
 			return t>12 and t-12 or t
 		end
 		info.TextColor3 = Color
+		info.TextStrokeColor3 = Color
 		info.Text = string.format('Running %s mode on build %s. D/T: %s/%s/%s  %s:%s:%s %s',data.GlobalMode,data.Build,LocalTime.month,LocalTime.day,LocalTime.year,LocalTime.hour >= 10 and shit(LocalTime.hour) or "0"..tostring(LocalTime.hour),LocalTime.min >= 10 and LocalTime.min or "0"..tostring(LocalTime.min),LocalTime.sec >= 10 and LocalTime.sec or "0"..tostring(LocalTime.sec),LocalTime.hour > 12 and "PM" or "AM")
 		LookVector.Text = "Camera LookVector: " .. Round(lv.X,3) .. " / " .. Round(lv.Y,3) .. " / " .. Round(lv.Z,3)
 		LookVector.TextStrokeColor3 = Color
@@ -3590,6 +3595,8 @@ local function GQQB_fake_script() -- main.LocalScript
 		ThirdPerson(not nv)
 	end)
 	
+	local TraitorFinderConnection
+	
 	local rs = game:service'RunService'
 	local Freekill = {}
 	
@@ -3613,7 +3620,7 @@ local function GQQB_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("TraitorFinder").AR,function(nv)
 		if nv == true then
-			workspace.Ragdolls.ChildAdded:Connect(function(Child)
+			TraitorFinderConnection = workspace.Ragdolls.ChildAdded:Connect(function(Child)
 				if Child:FindFirstChild("CorpseData") and Values.TraitorFinder == true then
 					local cd = Child:FindFirstChild("CorpseData")
 					if cd.IsFreeKill.Value == false and cd.IsSelfDefense.Value == false and cd.Team.Value == "Innocent" or cd.Team.Value == "Detective" and game:GetService("Players"):FindFirstChild("cd.KilledBy.Value") then
@@ -3624,7 +3631,8 @@ local function GQQB_fake_script() -- main.LocalScript
 				end
 			end)
 		else
-			local Freekill = {}
+			TraitorFinderConnection:Disconnect()
+			TraitorFinderConnection = nil
 		end
 	end)
 	
@@ -3714,10 +3722,18 @@ local function GQQB_fake_script() -- main.LocalScript
 			SilentAimConnection2 = nil
 		end
 	end)
-	
+	local CrouchWalkConnection
 	NewEnable(MiscCheats:WaitForChild("CrouchWalk").AR,function(nv)
+		local CrouchWalkConnection
 		if nv == true then
-	
+			CrouchWalkConnection = game:GetService("RunService").RenderStepped:Connect(function()
+				if not game.Players.LocalPlayer.Character.Humanoid.WalkSpeed then
+					game.Players.LocalPlayer.Character:WaitForChild("Humanoid").WalkSpeed = 16
+				end
+			end)
+		else
+			CrouchWalkConnection:Disconnect()
+			CrouchWalkConnection = nil
 		end
 	end)
 	
@@ -3874,7 +3890,7 @@ local function GQQB_fake_script() -- main.LocalScript
 	
 	NewEnable(MiscCheats:WaitForChild("AutoJoin").AR,function(nv)
 		if nv == true then
-			AutoJoinConnection = rs.Preparing.Changed:Connect(function()
+			AutoJoinConnection = rs.Preparing.Changed:Connect(function(AutoJoinConnection)
 				if rs.Preparing.Value == true then
 					wait(1)
 					if Values["Debug"] == true then
@@ -3983,4 +3999,4 @@ local function GQQB_fake_script() -- main.LocalScript
 		game.CoreGui.main:Destroy()
 	end
 end
-coroutine.wrap(GQQB_fake_script)()
+coroutine.wrap(PSTPARG_fake_script)()
