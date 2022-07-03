@@ -1,17 +1,19 @@
 local Color = Color3.fromHSV(0,1,1)
-		coroutine.wrap(function()
-			local r = 255
-			local g = 255
-			local b = 255
-			while wait() do
-				for i = 0,1,0.001*0.8 do
-					Color = Color3.fromHSV(i,1,1)
-					wait()
-				end
+	coroutine.wrap(function()
+		local r = 255
+		local g = 255
+		local b = 255
+		while wait() do
+			for i = 0,1,0.001*0.8 do
+				getgenv().Color = Color3.fromHSV(i,1,1)
+				Color = Color3.fromHSV(i,1,1)
+				wait()
 			end
-		end)()
-    
-    local drawing_new = Drawing.new
+		end
+	end)()
+
+-- instancing
+			local drawing_new = Drawing.new
 			local instance_new = Instance.new
 	
 			-- workspace
@@ -121,7 +123,7 @@ local Color = Color3.fromHSV(0,1,1)
 				frame_delay = 10, -- delay between rendering each frame (in miliseconds)
 				refresh_delay = 0.25, -- delay between refreshing script (in seconds)
 				max_dist = 9e9, -- 9e9 = very big
-				team_check = false,
+				team_check = true,
 				wall_check = true,
 	
 				loop_all_humanoids = false, -- loop through workspace to find npc's to lock onto
@@ -132,19 +134,19 @@ local Color = Color3.fromHSV(0,1,1)
 				aiming_at = false,
 	
 				-- aimbot settings
-				aimbot = true,
+				aimbot = false,
 				smoothness = 3,
 				fov = 200,
 				fov_increase_on_aim = 0, -- increases your fov by this value while the aimbot is active
 				rage_mode = false, -- disregards fov, smoothness, odds and will lock onto people behind you
 	
 				-- aim type settings
-				mouse_emulation = true, -- the default, will emulate user input (and is more natural)
+				mouse_emulation = false, -- the default, will emulate user input (and is more natural)
 				camera_cframe = false, -- aimlock, easier to detect, does not obey the smoothness setting but locks instantly
 	
 				-- will not lock on to people with this *username*, do not use a displayname for this, use the username
 				ignore_people = {
-					["name"] = true, -- example of how you would exclude someone
+					["name"] = false, -- example of how you would exclude someone
 				},
 	
 				-- will try to prefire when aiming
@@ -169,7 +171,7 @@ local Color = Color3.fromHSV(0,1,1)
 	
 				-- aiming prioritization options
 				looking_at_you = false, -- whoever is most likely to hit you
-				closest_to_center_screen = true,
+				closest_to_center_screen = false,
 				closest_to_you = false,
 	
 				-- taxing, usually useless, will iterate backwards through players list if the "best player to lock onto" cant be locked onto
@@ -180,16 +182,20 @@ local Color = Color3.fromHSV(0,1,1)
 				esp_thickness = 2,
 	
 				-- esp settings
+				tracers = true,
 				box = true,
 	
 				-- overhead esp settings
 				overhead = true, -- disables name health and distance entirely
 				name = true,
-				distance = false,
+				distance = true,
 				health = true,
 				outline = false, -- text outline, laggier
+				role = true,
 	
 				-- rainbow settings
+				rainbow = false,
+				rainbow_speed = 5, -- lower is faster, 0.000001 is the lowest you can go
 	
 				-- looking_at_tracer settings (lat = looking_at_tracer in short)
 				looking_at_tracer = true, -- will show where a player is looking
@@ -225,6 +231,9 @@ local Color = Color3.fromHSV(0,1,1)
 	
 				player_added:Disconnect()
 				player_removed:Disconnect()
+	
+				input_began:Disconnect()
+				input_ended:Disconnect()
 	
 				getgenv().remove_all_esp = nil
 	
@@ -274,54 +283,6 @@ local Color = Color3.fromHSV(0,1,1)
 					end
 	
 					return characters
-				end
-	
-				if place == 292439477 then -- phantom forces
-					local leaderboard = local_player.PlayerGui.Leaderboard.Main
-	
-					if leaderboard then
-						if options.team_check then
-							local is_ghost = pcall(function()
-								return leaderboard.Ghosts.DataFrame.Data[local_player.Name]
-							end)
-	
-							return get_children(workspace.Players[(is_ghost and "Bright blue") or "Bright orange"])
-						else
-							local instance_table = {}
-	
-							for idx, val in pairs(get_children(workspace.Players["Bright blue"])) do
-								if is_a(val, "Model") then
-									instance_table[#instance_table + 1] = val
-								end
-							end
-	
-							for idx, val in pairs(get_children(workspace.Players["Bright orange"])) do
-								if is_a(val, "Model") then
-									instance_table[#instance_table + 1] = val
-								end
-							end
-	
-							return instance_table -- return both teams
-						end
-					end
-	
-					return {} -- wtf???
-				end
-	
-				if place == 3837841034 then
-					return get_children(workspace.characters)
-				end
-	
-				if place == 5938036553 then
-					local chars = {}
-	
-					for _, val in pairs(get_children(workspace)) do
-						if val.Name == "r15_rig" then
-							chars[#chars + 1] = val
-						end
-					end
-	
-					return chars
 				end
 	
 				custom_players = false
@@ -519,6 +480,75 @@ local Color = Color3.fromHSV(0,1,1)
 			getgenv().player_removed = players.ChildRemoved:Connect(refresh)
 	
 			-- aimbot triggers
+			getgenv().input_began = uis.InputBegan:Connect(function(input)
+				if input.KeyCode == options.keyboard_key then
+					if options.acts_as_toggle then
+						start_aim = not start_aim
+					else
+						start_aim = true
+					end
+	
+					if options.fov_increase_on_aim > 0 then
+						for i = 1, options.fov_increase_on_aim * 0.3 do
+							added_fov = added_fov + 3
+							task_wait()
+						end
+	
+						added_fov = options.fov_increase_on_aim
+					end
+				end
+	
+				if input.UserInputType == options.mouse_key then
+					if options.acts_as_toggle then
+						start_aim = not start_aim
+					else
+						start_aim = true
+					end
+	
+					if options.fov_increase_on_aim > 0 then
+						for i = 1, options.fov_increase_on_aim * 0.3 do
+							added_fov = added_fov + 3
+							task_wait()
+						end
+	
+						added_fov = options.fov_increase_on_aim
+					end
+				end
+			end)
+	
+			getgenv().input_ended = uis.InputEnded:Connect(function(input)
+				if input.KeyCode == options.keyboard_key then
+					if not options.acts_as_toggle then
+						start_aim = false
+					end
+	
+					if options.fov_increase_on_aim > 0 then
+						for i = 1, options.fov_increase_on_aim * 0.3 do
+							added_fov = added_fov - 3
+	
+							task_wait()
+						end
+	
+						added_fov = 0
+					end
+				end
+	
+				if input.UserInputType == options.mouse_key then
+					if not options.acts_as_toggle then
+						start_aim = false
+					end
+	
+					if options.fov_increase_on_aim > 0 then
+						for i = 1, options.fov_increase_on_aim * 0.3 do
+							added_fov = added_fov - 3
+	
+							task_wait()
+						end
+	
+						added_fov = 0
+					end
+				end
+			end)
 	
 			local last_tick = 0;
 	
@@ -537,7 +567,7 @@ local Color = Color3.fromHSV(0,1,1)
 						Thickness = options.esp_thickness,
 						Radius = options.fov + added_fov,
 						Position = center_screen,
-						Color = coroutine.wrap(function()
+						coroutine.wrap(function()
 							while wait() do
 								Color = Color
 							end
@@ -550,11 +580,7 @@ local Color = Color3.fromHSV(0,1,1)
 						Thickness = options.crosshair_thickness,
 						From = vector2_new(center_screen.X, center_screen.Y - options.crosshair_length - options.crosshair_distance),
 						To = vector2_new(center_screen.X, center_screen.Y - options.crosshair_distance),
-						Color = coroutine.wrap(function()
-							while wait() do
-								Color = Color
-							end
-						end)(),
+						Color = Color,
 						instance = "Line";
 					})
 	
@@ -563,11 +589,7 @@ local Color = Color3.fromHSV(0,1,1)
 						Thickness = options.crosshair_thickness,
 						From = vector2_new(center_screen.X, center_screen.Y + options.crosshair_length + options.crosshair_distance + 1),
 						To = vector2_new(center_screen.X, center_screen.Y + options.crosshair_distance + 1),
-						Color = coroutine.wrap(function()
-							while wait() do
-								Color = Color
-							end
-						end)(),
+						Color = Color,
 						instance = "Line";
 					})
 	
@@ -576,11 +598,7 @@ local Color = Color3.fromHSV(0,1,1)
 						Thickness = options.crosshair_thickness,
 						From = vector2_new(center_screen.X - options.crosshair_length - options.crosshair_distance, center_screen.Y),
 						To = vector2_new(center_screen.X - options.crosshair_distance, center_screen.Y),
-						Color = coroutine.wrap(function()
-							while wait() do
-								Color = Color
-							end
-						end)(),
+						Color = Color,
 						instance = "Line";
 					})
 	
@@ -589,11 +607,7 @@ local Color = Color3.fromHSV(0,1,1)
 						Thickness = options.crosshair_thickness,
 						From = vector2_new(center_screen.X + options.crosshair_length + options.crosshair_distance + 1, center_screen.Y),
 						To = vector2_new(center_screen.X + options.crosshair_distance + 1, center_screen.Y),
-						Color = coroutine.wrap(function()
-							while wait() do
-								Color = Color
-							end
-						end)(),
+						Color = Color,
 						instance = "Line";
 					})
 	
@@ -634,17 +648,36 @@ local Color = Color3.fromHSV(0,1,1)
 						if mag > options.max_dist then remove_esp(id); continue; end
 	
 						if options.esp then
-							local col = coroutine.wrap(function()
-								while wait() do
-									Color = Color
-								end
-							end)()
 							local corners = get_part_corners(root_part)
 	
 							local a_screen, a_visible = to_screen(corners.top_left)
 							local b_screen, b_visible = to_screen(corners.top_right)
 							local c_screen, c_visible = to_screen(corners.bottom_right)
 							local d_screen, d_visible = to_screen(corners.bottom_left)
+	
+							if options.tracers then -- doesnt have a hide condition
+								local object_space_pos = point_object_space(cam.CFrame, vector3_new(
+									(corners.top_left.X + corners.top_right.X) / 2, 
+									(corners.top_left.Y + corners.top_right.Y) / 2, 
+									(corners.top_left.Z + corners.top_right.Z) / 2
+									))
+	
+								if 0 > scr_z.Z then -- thanks unnamed esp for the math
+									local angle = math_atan2(object_space_pos.Y, object_space_pos.X) + pi
+									object_space_pos = vector_world_space(cframe_angles(0, 0, angle), (cframe_angles(0, math_rad(89.99), 0).LookVector))
+								end
+	
+								local tracer_pos = to_screen(point_world_space(cam.CFrame, object_space_pos))
+	
+								add_or_update_instance(tracers, id, {
+									Visible = options.esp,
+									Thickness = options.esp_thickness,
+									From = vector2_new(screen_size.X / 2, screen_size.Y - 36),
+									To = tracer_pos,
+									Color = Color,
+									instance = "Line";
+								})
+							end
 	
 							if options.box then
 								if a_visible and b_visible and c_visible and d_visible then
@@ -655,7 +688,7 @@ local Color = Color3.fromHSV(0,1,1)
 										PointB = b_screen,
 										PointC = c_screen,
 										PointD = d_screen,
-										Color = col,
+										Color = Color,
 										instance = "Quad";
 									})
 								else
@@ -675,10 +708,14 @@ local Color = Color3.fromHSV(0,1,1)
 									if hum then
 										text = string_format("%s[%d/%d] ", text, math_ceil(hum.Health), math_ceil(hum.MaxHealth))
 									end
-								end
+								end                 
 	
 								if options.name then
 									text = string_format("%s%s ", text, plr.Name)
+								end
+	
+								if options.role then
+	
 								end
 	
 								local head_screen, h_visible = to_screen(head.Position + head.CFrame.UpVector * 2)
@@ -692,7 +729,7 @@ local Color = Color3.fromHSV(0,1,1)
 										Center = true,
 										Position = head_screen - vector2_new(0, (obj and obj.TextBounds.Y) or 0),  
 										Text = text,
-										Color = col,
+										Color = Color,
 										instance = "Text";
 									})
 								else
@@ -816,6 +853,17 @@ local Color = Color3.fromHSV(0,1,1)
 										end
 									end
 	
+									if options.triggerbot then
+										if is_descendant_of(hitting_what(cam.CFrame), chosen.part.Parent) then
+											mouse1press()
+										else
+											mouse1release()
+										end
+									end
+	
+									return;
+								else
+	
 									add_or_update_instance(aiming, "line", {
 										Visible = false,
 										instance = "Line";
@@ -826,7 +874,6 @@ local Color = Color3.fromHSV(0,1,1)
 	
 								return; -- part is on screen, and in fov, no need to find a new player, loop ends here
 							end -- part exists?
-	
 	
 							add_or_update_instance(aiming, "line", {
 								Visible = false,
