@@ -1,0 +1,177 @@
+for i, connection in pairs(getconnections(game:GetService("ScriptContext").Error)) do
+				connection:Disable()
+			end
+	
+			local camera = workspace.CurrentCamera
+	
+			val = true
+	
+	
+			local LPlayer = game:GetService("Players").LocalPlayer
+			local LocalMouse = LPlayer:GetMouse()
+			local mouse = LPlayer:GetMouse()
+			local lp = game:GetService("Players").LocalPlayer
+			local ps = game:GetService("Players")
+	
+			local function ApplySettings(obj, tab) -- so that one weird kid on discord can edit the visuals without bothering me (he'll still probably fuck it up)
+				for i, v in next, tab do
+					obj[i] = v
+				end
+			end
+	
+			local sizingFactor = 3.5
+			local PlayerESPBoxes = {
+				Thickness = 1,
+				Visible = false,
+				Color = Color3.new(1, 1, 1),
+				Filled = false
+			}
+	
+			local PlayerESPNames = {
+				Color = Color3.new(1, 1, 1),
+				Outline = true,
+				Font = 3,
+				Size = 20,
+				Center = false,
+				Visible = false, -- these 2 don't matter, they get overwritten
+				Position = Vector2.new()
+				-- you can change fonts in here as well
+			}
+	
+			local PlayerESPHealth = {
+				-- (same shit as above)
+				Color = Color3.new(1, 1, 1),
+				Outline = true,
+				Size = 20,
+				Font = 3,
+				Size = 20,
+				Center = false,
+				Visible = false, -- these 2 don't matter, they get overwritten
+				Position = Vector2.new()
+				-- you can change fonts in here as well
+			}
+	
+			local PlayerESP = {
+				box = {
+					[1] = Drawing.new("Square"), -- tbh this has stuck around from the first time i made the esp, cba to change it now
+					Created = 1,
+					Active = 0
+				},
+				name = {
+					[1] = Drawing.new("Text"),
+					Created = 1,
+					Active = 0
+				},
+				health = {
+					[1] = Drawing.new("Text"),
+					Created = 1,
+					Active = 0
+				},
+			}
+	
+			ApplySettings(PlayerESP.box[1], PlayerESPBoxes)
+			ApplySettings(PlayerESP.name[1], PlayerESPNames)
+			ApplySettings(PlayerESP.health[1], PlayerESPHealth)
+	
+	
+			local GamePlayers = game:GetService("Players") -- the Players object can have its name changed, though ive personally never had issues accessing players via game.Players when the name has been changed, its safer this way (incase something in the roblox engine changes)
+			game:GetService("RunService").RenderStepped:Connect(
+			function(frameDelta)
+				PlayerESP.box.Active = 0 -- incase the retard asks to seperate the visuals into different settings
+				PlayerESP.name.Active = 0
+				PlayerESP.health.Active = 0
+	
+				if val then
+					for i, v in next, GamePlayers:GetPlayers() do
+						if
+							v == LPlayer or
+							not (v.Character and v.Character:FindFirstChild("HumanoidRootPart") and
+								v.Character:FindFirstChild("Head") and
+								v.Character:FindFirstChildOfClass("Humanoid") and
+								math.floor(v.Character:FindFirstChildOfClass("Humanoid").Health) > 0)
+						then
+							continue
+						end
+	
+						PlayerESP.box.Active = PlayerESP.box.Active + 1
+						PlayerESP.name.Active = PlayerESP.name.Active + 1
+						PlayerESP.health.Active = PlayerESP.health.Active + 1
+	
+						if (not PlayerESP.box[PlayerESP.box.Active]) then
+							PlayerESP.box[PlayerESP.box.Active] = Drawing.new("Square")
+							ApplySettings(PlayerESP.box[PlayerESP.box.Active], PlayerESPBoxes)
+							PlayerESP.box.Created = PlayerESP.box.Created + 1
+						end
+						if (not PlayerESP.name[PlayerESP.name.Active]) then
+							PlayerESP.name[PlayerESP.name.Active] = Drawing.new("Text")
+							ApplySettings(PlayerESP.name[PlayerESP.name.Active], PlayerESPNames)
+							PlayerESP.name.Created = PlayerESP.name.Created + 1
+						end
+						if (not PlayerESP.health[PlayerESP.health.Active]) then
+							PlayerESP.health[PlayerESP.health.Active] = Drawing.new("Text")
+							ApplySettings(PlayerESP.health[PlayerESP.health.Active], PlayerESPHealth)
+							PlayerESP.health.Created = PlayerESP.health.Created + 1
+						end
+	
+						local TopPoint = camera:WorldToViewportPoint(v.Character.Head.Position + Vector3.new(0, 1, 0))
+						local BottomPoint =
+							camera:WorldToViewportPoint(v.Character.HumanoidRootPart.Position - Vector3.new(0, 3, 0))
+						if (TopPoint.Z > 0 and BottomPoint.Z > 0) then
+							local DeltaPosition = TopPoint - BottomPoint
+							PlayerESP.box[PlayerESP.box.Active].Visible = true
+							PlayerESP.box[PlayerESP.box.Active].Position =
+								Vector2.new(TopPoint.X - (DeltaPosition.Y / sizingFactor), TopPoint.Y)
+							PlayerESP.box[PlayerESP.box.Active].Size =
+								Vector2.new((DeltaPosition.Y / sizingFactor) * 2, -DeltaPosition.Y)
+	
+							local indent = math.ceil(PlayerESP.box[PlayerESP.box.Active].Thickness / 2) + 2 -- so thicknes can be safely edited
+	
+							PlayerESP.name[PlayerESP.name.Active].Visible = true
+							PlayerESP.name[PlayerESP.name.Active].Text = v.Name
+							PlayerESP.name[PlayerESP.name.Active].Position =
+								Vector2.new(
+									PlayerESP.box[PlayerESP.box.Active].Position.X + indent,
+									PlayerESP.box[PlayerESP.box.Active].Position.Y -
+									PlayerESP.name[PlayerESP.name.Active].TextBounds.Y * 0.25
+								)
+	
+							local healthRatio =
+								v.Character:FindFirstChildOfClass("Humanoid").Health /
+								v.Character:FindFirstChildOfClass("Humanoid").MaxHealth
+							PlayerESP.health[PlayerESP.health.Active].Visible = true
+							PlayerESP.health[PlayerESP.health.Active].Text =
+								"Health: " .. tostring(math.floor(v.Character:FindFirstChildOfClass("Humanoid").Health))
+							PlayerESP.health[PlayerESP.health.Active].Color =
+								Color3.new(1 - healthRatio, healthRatio, 0)
+							PlayerESP.health[PlayerESP.health.Active].Position =
+								Vector2.new(
+									PlayerESP.box[PlayerESP.box.Active].Position.X + indent,
+									PlayerESP.box[PlayerESP.box.Active].Position.Y +
+									PlayerESP.name[PlayerESP.name.Active].TextBounds.Y * 0.5 +
+									1 -
+									PlayerESP.health[PlayerESP.health.Active].TextBounds.Y * 0.25
+								)
+						else -- either this or doing the same thing below with an additional re-iteration of the table
+							PlayerESP.box[PlayerESP.box.Active].Visible = false
+							PlayerESP.name[PlayerESP.name.Active].Visible = false
+							PlayerESP.health[PlayerESP.health.Active].Visible = false
+						end
+					end
+				end
+				if (PlayerESP.box.Created > PlayerESP.box.Active) then
+					for i = 1, PlayerESP.box.Created - PlayerESP.box.Active, 1 do
+						PlayerESP.box[PlayerESP.box.Active + i].Visible = false
+					end
+				end
+				if (PlayerESP.name.Created > PlayerESP.name.Active) then
+					for i = 1, PlayerESP.name.Created - PlayerESP.name.Active, 1 do
+						PlayerESP.name[PlayerESP.name.Active + i].Visible = false
+					end
+				end
+				if (PlayerESP.health.Created > PlayerESP.health.Active) then
+					for i = 1, PlayerESP.health.Created - PlayerESP.health.Active, 1 do
+						PlayerESP.health[PlayerESP.health.Active + i].Visible = false
+					end
+				end
+	
+			end)
