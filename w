@@ -1,4 +1,4 @@
-getgenv().mars = {}
+getgenv().TrueMarsLoginInformation = {}
 
-getgenv().mars["Username"] = "mars123"
-getgenv().mars["Password"] = "mars06042003"
+getgenv().TrueMarsLoginInformation["Username"] = "mars123"
+getgenv().TrueMarsLoginInformation["Password"] = "mars06042003"
