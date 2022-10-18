@@ -1,4 +1,4 @@
 return {
-  Build = "2.0.1"
+  Build = "2.0.1",
   GlobadMode = "EXPERIMENTAL"
 }
